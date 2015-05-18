@@ -1,0 +1,184 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	padding-top: 50px;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+	border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+	display: none;
+}
+@media (min-width: 768px) {
+	.sidebar {
+		position: fixed;
+		top: 51px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 10px;
+		overflow-x: hidden;
+		overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px; /* 20px padding + 1px border */
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+.nav-sidebar > li > a {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+.nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+	color: #fff;
+	background-color: #428bca;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+	padding: 20px;
+}
+@media (min-width: 768px) {
+	.main {
+		padding-right: 40px;
+		padding-left: 40px;
+	}
+}
+.main .page-header {
+	margin-top: 0;
+}
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+	margin-bottom: 30px;
+	text-align: center;
+}
+.placeholders h4 {
+	margin-bottom: 0;
+}
+.placeholder {
+	margin-bottom: 20px;
+}
+.placeholder img {
+	display: inline-block;
+	border-radius: 50%;
+}
+
+/*
+ * Image Holder
+ */
+
+#holder {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border: solid 1px #333;
+	width : 100%;
+	height: 600px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	position:  relative;
+}
+
+#holder2 {
+	z-index: 1;
+}
+#holder1 {
+	z-index: 2;
+	position: absolute;
+	width : 60px;
+	height: 400px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+p {
+	text-align: center;
+}
+
+#btn_close_popup {
+	position: relative;
+	float: right;
+}
+
+.popup {
+	position: fixed;
+	z-index: 99999;
+	display: block;
+	top: 0px;
+	left: 0px;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	line-height: 786px;
+	background-color: rgba(244, 244, 244, 0.98);
+}
+
+.tip_holder{
+	background-color:pink;
+	width:120px;
+	z-index:999;
+	position:absolute;
+	min-height:40px;
+}
+
+ul.users{
+	list-style-type: none;
+	padding-left: 20px;
+}
+
+li.emp{
+	margin-top : 5px;
+}
+
+li.emp:hover{
+	margin-top : 5px;
+	background-color: #428BCA;
+}
+
+li.mgr{
+	margin-top : 5px;
+}
+li.mgr:hover{
+	margin-top : 5px;
+	background-color: #428BCA;
+}
+
+.hide {
+	display: none;
+	visibility: hidden;
+}

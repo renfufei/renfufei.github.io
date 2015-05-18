@@ -16,7 +16,6 @@
 			"linkman": "总经理",
 			"linktitle": "X总",
 			"snorder": 100,
-			"empnum": 16,
 			"state": {
 				"opened": 1,
 				"selected": 0
@@ -28,7 +27,6 @@
 					"linkman": "人力经理",
 					"linktitle": "李丽",
 					"snorder": 110,
-					"empnum": 4,
 					"state": {
 						"opened": 0,
 						"selected": 0
@@ -41,7 +39,6 @@
 					"linkman": "财务经理",
 					"linktitle": "王涛",
 					"snorder": 120,
-					"empnum": 2,
 					"state": {
 						"opened": 0,
 						"selected": 0
@@ -54,7 +51,6 @@
 					"linkman": "咨询总监",
 					"linktitle": "王瑜",
 					"snorder": 130,
-					"empnum": 4,
 					"state": {
 						"opened": 1,
 						"selected": 0
@@ -66,7 +62,6 @@
 							"linkman": "咨询经理",
 							"linktitle": "经理一",
 							"snorder": 131,
-							"empnum": 2,
 							"state": {
 								"opened": 0,
 								"selected": 0
@@ -79,7 +74,6 @@
 							"linkman": "咨询经理",
 							"linktitle": "经理二",
 							"snorder": 132,
-							"empnum": 0,
 							"state": {
 								"opened": 0,
 								"selected": 0
@@ -96,7 +90,6 @@
 			"linkman": "总经理",
 			"linktitle": "X总",
 			"snorder": 200,
-			"empnum": 10,
 			"state": {
 				"opened": 0,
 				"selected": 0
@@ -108,7 +101,6 @@
 					"linkman": "人力经理",
 					"linktitle": "X经理",
 					"snorder": 210,
-					"empnum": 2,
 					"state": {
 						"opened": 0,
 						"selected": 0
@@ -121,7 +113,6 @@
 					"linkman": "财务总监",
 					"linktitle": "X总监",
 					"snorder": 220,
-					"empnum": 2,
 					"state": {
 						"opened": 0,
 						"selected": 0
@@ -134,7 +125,6 @@
 					"linkman": "研发经理",
 					"linktitle": "X经理",
 					"snorder": 230,
-					"empnum": 6,
 					"state": {
 						"opened": 0,
 						"selected": 0
@@ -147,7 +137,6 @@
 					"linkman": "销售总监",
 					"linktitle": "X总监",
 					"snorder": 230,
-					"empnum": 2,
 					"state": {
 						"opened": 0,
 						"selected": 0
@@ -160,7 +149,6 @@
 					"linkman": "服务经理",
 					"linktitle": "X经理",
 					"snorder": 230,
-					"empnum": 2,
 					"state": {
 						"opened": 0,
 						"selected": 0

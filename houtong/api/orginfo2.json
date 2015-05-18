@@ -1,10 +1,11 @@
 {
 	"noteinfo": "可以是这种类型的数据拓扑,也可以使用 parent 字段,从数据库直接导出[]记录",
 	"orgid": "1",
-	"text": "厚通集团",
+	"text": "厚通集团(0)",
 	"linkman": "董事长",
 	"linktitle": "X董事",
 	"snorder": 1,
+	"empnum": 0,
 	"state": {
 		"opened": 1,
 		"selected": 1
@@ -12,11 +13,11 @@
 	"children": [
 		{
 			"orgid": "100",
-			"text": "北京厚通益和管理咨询有限公司",
+			"text": "北京厚通益和管理咨询有限公司(0)",
 			"linkman": "总经理",
 			"linktitle": "X总",
 			"snorder": 100,
-			"empnum": 16,
+			"empnum": 0,
 			"state": {
 				"opened": 1,
 				"selected": 0
@@ -24,23 +25,10 @@
 			"children": [
 				{
 					"orgid": "110",
-					"text": "人力资源部",
+					"text": "人力资源部(2)",
 					"linkman": "人力经理",
 					"linktitle": "李丽",
 					"snorder": 110,
-					"empnum": 4,
-					"state": {
-						"opened": 0,
-						"selected": 0
-					},
-					"children": []
-				}
-				, {
-					"orgid": "120",
-					"text": "财务部",
-					"linkman": "财务经理",
-					"linktitle": "王涛",
-					"snorder": 120,
 					"empnum": 2,
 					"state": {
 						"opened": 0,
@@ -49,12 +37,38 @@
 					"children": []
 				}
 				, {
+					"orgid": "120",
+					"text": "财务部(0)",
+					"linkman": "财务经理",
+					"linktitle": "王涛",
+					"snorder": 120,
+					"empnum": 0,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "125",
+					"text": "研究院(3)",
+					"linkman": "总监",
+					"linktitle": "王总",
+					"snorder": 125,
+					"empnum": 3,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
 					"orgid": "130",
-					"text": "咨询部",
+					"text": "咨询部(10)",
 					"linkman": "咨询总监",
 					"linktitle": "王瑜",
 					"snorder": 130,
-					"empnum": 4,
+					"empnum": 3,
 					"state": {
 						"opened": 1,
 						"selected": 0
@@ -62,11 +76,11 @@
 					"children": [
 						{
 							"orgid": "131",
-							"text": "咨询一部",
+							"text": "咨询一部(6)",
 							"linkman": "咨询经理",
 							"linktitle": "经理一",
 							"snorder": 131,
-							"empnum": 2,
+							"empnum": 6,
 							"state": {
 								"opened": 0,
 								"selected": 0
@@ -75,11 +89,11 @@
 						}
 						, {
 							"orgid": "132",
-							"text": "咨询二部",
+							"text": "咨询二部(4)",
 							"linkman": "咨询经理",
 							"linktitle": "经理二",
 							"snorder": 132,
-							"empnum": 0,
+							"empnum": 4,
 							"state": {
 								"opened": 0,
 								"selected": 0
@@ -92,11 +106,11 @@
 		}
 		, {
 			"orgid": "200",
-			"text": "北京厚通益和科技有限公司",
+			"text": "北京厚通益和科技有限公司(0)",
 			"linkman": "总经理",
 			"linktitle": "X总",
 			"snorder": 200,
-			"empnum": 10,
+					"empnum": 0,
 			"state": {
 				"opened": 0,
 				"selected": 0
@@ -104,7 +118,7 @@
 			"children": [
 				{
 					"orgid": "210",
-					"text": "人力资源部",
+					"text": "人力资源部(2)",
 					"linkman": "人力经理",
 					"linktitle": "X经理",
 					"snorder": 210,
@@ -117,7 +131,7 @@
 				}
 				, {
 					"orgid": "220",
-					"text": "财务核算中心",
+					"text": "财务核算中心(2)",
 					"linkman": "财务总监",
 					"linktitle": "X总监",
 					"snorder": 220,
@@ -130,7 +144,7 @@
 				}
 				, {
 					"orgid": "230",
-					"text": "研发中心",
+					"text": "研发中心(6)",
 					"linkman": "研发经理",
 					"linktitle": "X经理",
 					"snorder": 230,
@@ -143,7 +157,7 @@
 				}
 				, {
 					"orgid": "230",
-					"text": "销售中心",
+					"text": "销售中心(2)",
 					"linkman": "销售总监",
 					"linktitle": "X总监",
 					"snorder": 230,
@@ -156,7 +170,7 @@
 				}
 				, {
 					"orgid": "230",
-					"text": "服务中心",
+					"text": "服务中心(2)",
 					"linkman": "服务经理",
 					"linktitle": "X经理",
 					"snorder": 230,

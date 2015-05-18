@@ -9,7 +9,7 @@
 	var __config = {
 		_note_info : "默认配置信息,这堆配置信息,可以通过后台配置来覆盖",
 		width_dept : 200, // 宽
-		height_dept : 100,
+		height_dept : 140,
 		padding_dept : 25,
 		radius_dept : 10,
 		margin_parent : 45, // 间距
@@ -28,7 +28,7 @@
 		top_paper : 50,
 		line_color : "#3333ff", // 连线的颜色
 		//
-		orginfo_json_url : 'api/orginfo.json'
+		orginfo_json_url : 'api/orginfo2.json'
 	};
 	//
 	var global = {
@@ -202,18 +202,24 @@
 		});
 		// 设置字体
 		var font = paper.getFont("Times", 800); //Times
-		// 2. 绘制部门信息
+		// 2. 绘制部门目标信息
 		var text = node.text || "";
 		//
 		var tlen = text.length;
+		if(text.indexOf("集团") > 0){
+			text = "集团目标名称";
+		}else if(text.indexOf("公司") > 0 ){
+			text = "企业目标名称";
+		}else //if(text.indexOf("部") > 0)
+		{
+			text = "部门目标名称";
+		}
 		//
-		text = text.substr(tlen - 2);
-		text = text + "目标";
 		//
 		if(text.length > 8){
 			text = text.substr(0,8) + "\n" + text.substr(8);
 		}
-		var nameText = paper.text(x_s + w/2, y_s + pad, text);
+		var nameText = paper.text(x_s + w/3, y_s + pad, text);
 		
 		//var nameText = paper.print(x_s + w/2, y_s + pad, text, font, 30);
 		
@@ -238,10 +244,17 @@
 		if(linktitle){
 			linkinfo += "("+ linktitle +")";
 		}
+		if(node.text.indexOf("集团") > 0){
+			linkinfo = "主责部门";
+		}else if(node.text.indexOf("公司") > 0 ){
+			linkinfo = "主责部门";
+		}else //if(text.indexOf("部") > 0)
+		{
+			linkinfo = "最后汇报时间: 2015-05-15";
+		}
 		//
-		linkinfo = "最后汇报时间\n完成进度   30%";
 		//
-		var linkText = paper.text(x_s + 20, y_e - 40 , linkinfo);
+		var linkText = paper.text(x_s + 20, y_s + pad*2.5 , linkinfo);
 		linkText.attr({
 			"font-family":"microsoft yahei",
 			"font-size" : 14
@@ -250,6 +263,48 @@
 		});
 		linkText.dblclick(dbclickHandler);
 		linkText.datanode = node;
+		
+		
+		
+		// 3.1完成进度
+		//
+		var jindu = original.jindu || 30;
+		//
+		var jinduinfo = "";
+		if(node.text.indexOf("集团") > 0){
+		}else if(node.text.indexOf("公司") > 0 ){
+		}else
+		{
+			jinduinfo = "完成进度:";
+			
+			//
+			var jinduText = paper.text(x_s + 20, y_s + pad*4 , jinduinfo);
+			jinduText.attr({
+				"font-family":"microsoft yahei",
+				"font-size" : 12
+				, "text-anchor" : "start"
+				//, cursor : "pointer"
+			});
+			jinduText.datanode = node;
+			// 画2个椭圆
+			var jinduw = 80;
+			var jinduxs = x_s + 80;
+			var jindu1 = paper.rect(x_s + 80, y_s + pad*3.9, jinduw, 8, 1);
+			var jindu2 = paper.rect(x_s + 80, y_s + pad*3.9, jinduw * jindu /100, 8, 1);
+			jindu2.attr({
+				fill : "#2fc2f5"
+			});
+			
+			var jindut2 = ""+ jindu +"%";
+			var jindu2Text = paper.text(jinduw + jinduxs + 5, y_s + pad*4 , jindut2);
+			jindu2Text.attr({
+				"font-family":"microsoft yahei",
+				"font-size" : 12
+				, "text-anchor" : "start"
+				//, cursor : "pointer"
+			});
+		}
+		//
 		
 		// 查看
 		//
@@ -261,7 +316,250 @@
 			"font-family":"microsoft yahei",
 			"font-size" : 14
 			, "text-anchor" : "start"
-			, "color": "blue"
+			, "color": "#23cba6"
+			, "fill": "#2ebcee"
+			//, cursor : "pointer"
+		});
+		lookText.dblclick(dbclickHandler);
+		lookText.datanode = node;
+		
+		// 绘制职员。 临时
+		drawTempEmp(paper, node);
+		//
+		node.rect = rect;
+		node.nameText = nameText;
+		//
+		return node;
+	};
+	
+	//
+	function drawTempEmp(paper, node){
+		//
+		if(!node || !paper){
+			return null;
+		}
+		
+		if(node.children.length > 0 || !node.original  || !node.original.empnum){
+			//
+			return null;
+		}
+		//
+		var w = node.width || global.config.width_dept;
+		var h = node.height || global.config.height_dept;
+		var r = global.config.radius_dept;
+		var pad = global.config.padding_dept;
+		
+		var marginp = global.config.margin_parent;
+		var margins = global.config.margin_partner;
+		var direction = global.config.direction;
+		
+		//
+		var x_s = node.x || global.config.left_paper;
+		var y_s = node.y || global.config.top_paper;
+		
+		//
+		x_s = x_s + marginp + w;
+		
+		var x_e = x_s + w;
+		var y_e = y_s + h;
+		
+		// 1. 绘制矩形框
+		var rect = paper.rect(x_s, y_s, w, h, r);
+		var tempemp = rect;
+		//
+		rect.dblclick(dbclickHandler);
+		rect.datanode = node;
+		
+		// expand_level
+		// expand_status
+		// 1.1 绘制下方的展开状态图标
+		// 没有子节点的情况
+		var expand_status = node.expand_status;
+		//
+		var exp_circle = null;
+		
+		// 上下左右.
+		var pDown = {
+			x : x_s + w/2 +1,
+			y : y_e + 8
+		};
+		var pRight = {
+			x : x_e +  8,
+			y : y_s + h / 2 
+		};
+		//
+		if(0 == direction){// 判断横竖
+			var exp_x = pDown.x;
+			var exp_y = pDown.y;
+		} else {
+			var exp_x = pRight.x;
+			var exp_y = pRight.y;
+		}
+		if(1 == expand_status){
+			// 绘制展开状态, -号
+			var charExp = "-";
+			var exp_circle = paper.circle(exp_x, exp_y, 5);
+			var exp_char = paper.text(exp_x, exp_y, charExp);
+		} else if(2 == expand_status){
+			// 绘制收缩状态, +号
+			var charExp = "+";
+			var exp_circle = paper.circle(exp_x, exp_y, 5);
+			var exp_char = paper.text(exp_x, exp_y, charExp);
+		} else {
+			// 不绘制. 0
+		}
+		//
+		exp_circle && exp_circle.attr({
+			fill : "#eee"
+			,stroke : "#00e"
+			,cursor : "pointer"
+		});
+		exp_char && exp_char.attr({
+			stroke : "#00e"
+			,cursor : "pointer"
+		});
+		// 绑定展开事件
+		function exp_handler(e, data){
+			// treenode
+			var to_expand_status = 0;
+			if(1 == expand_status){
+				 // 变成关闭
+				 to_expand_status = 2;
+			} else {
+				 to_expand_status = 1;
+			}
+			//
+			// 改变状态,刷新
+			node.treenode &&( node.treenode.to_expand_status = to_expand_status);
+			refreshDeptTree();
+		}
+		//
+		exp_circle && exp_circle.click(exp_handler);
+		exp_char && exp_char.click(exp_handler);
+		
+		
+		var color = Raphael.getColor();
+		rect.attr({
+			fill : color,
+			stroke : color,
+			"fill-opacity" : 0.3,
+			"stroke-width" : 2
+			//,cursor : "pointer"
+		});
+		// 设置字体
+		var font = paper.getFont("Times", 800); //Times
+		// 2. 绘制部门信息
+		var text = node.text || "";
+		//
+		var tlen = text.length;
+		//
+		text = text.substr(tlen - 2);
+		text = "于栾英　　　　已关注";
+		//
+		var nameText = paper.text(x_e -5, y_s + pad * 0.6, text);
+		
+		//var nameText = paper.print(x_s + w/2, y_s + pad, text, font, 30);
+		
+		nameText.dblclick(dbclickHandler);
+		nameText.datanode = node;
+		nameText.attr({
+			"font-family":"microsoft yahei",
+			"font-size" : 13,
+			"text-anchor" : "end",
+			cursor : "pointer"
+		});
+		//
+		var src= "image/e_24.png";
+		var img = paper.image(src, x_s + 25, y_s + pad * 0.2, 24, 24);
+		
+		
+		var dotText = paper.text(x_s + 5, y_s + pad*1.5, "········································");
+		dotText.attr({
+			"font-family":"microsoft yahei",
+			"font-size" : 18,
+			"text-anchor" : "start",
+			cursor : "pointer"
+		});
+		
+		// 3. 绘制部门经理
+		var original = node.original || {};
+		//
+		var linkman = original.linkman;
+		var linktitle = original.linktitle;
+		//
+		var linkinfo = "";
+		if(linkman){
+			linkinfo += linkman; 
+		}
+		if(linktitle){
+			linkinfo += "("+ linktitle +")";
+		}
+		//
+		linkinfo = "任务目标名称";
+		//
+		var linkText = paper.text(x_s + 20, y_s + pad * 2.8 , linkinfo);
+		linkText.attr({
+			"font-family":"microsoft yahei",
+			"font-size" : 14
+			, "text-anchor" : "start"
+			//, cursor : "pointer"
+		});
+		linkText.dblclick(dbclickHandler);
+		linkText.datanode = node;
+		
+		
+		// 3.1完成进度
+		//
+		var jindu = original.jindu || 80;
+		//
+		var jinduinfo = "";
+		if(node.text.indexOf("集团") > 0){
+		}else if(node.text.indexOf("公司") > 0 ){
+		}else
+		{
+			jinduinfo = "进度条:";
+			
+			//
+			var jinduText = paper.text(x_s + 20, y_s + pad*4 , jinduinfo);
+			jinduText.attr({
+				"font-family":"microsoft yahei",
+				"font-size" : 12
+				, "text-anchor" : "start"
+				//, cursor : "pointer"
+			});
+			jinduText.datanode = node;
+			// 画2个椭圆
+			var jinduw = 80;
+			var jinduxs = x_s + 80;
+			var jindu1 = paper.rect(x_s + 80, y_s + pad*3.9, jinduw, 8, 1);
+			var jindu2 = paper.rect(x_s + 80, y_s + pad*3.9, jinduw * jindu /100, 8, 1);
+			jindu2.attr({
+				fill : "#2fc2f5"
+			});
+			
+			var jindut2 = ""+ jindu +"%";
+			var jindu2Text = paper.text(jinduw + jinduxs + 5 , y_s + pad*4 , jindut2);
+			jindu2Text.attr({
+				"font-family":"microsoft yahei",
+				"font-size" : 12
+				, "text-anchor" : "start"
+				//, cursor : "pointer"
+			});
+		}
+		//
+		
+		// 查看
+		//
+		//
+		var lookinfo = "查看";
+		//
+		var lookText = paper.text(x_e - 40, y_e - 14 , lookinfo);
+		lookText.attr({
+			"font-family":"microsoft yahei",
+			"font-size" : 14
+			, "text-anchor" : "start"
+			, "color": "#23cba6"
+			, "fill": "#2ebcee"
 			//, cursor : "pointer"
 		});
 		lookText.dblclick(dbclickHandler);
@@ -269,10 +567,19 @@
 		
 		
 		//
-		node.rect = rect;
-		node.nameText = nameText;
+		var timeinfo = "2015-01-01";
 		//
-		return node;
+		var timeText = paper.text(x_s + 20, y_e - 14 , timeinfo);
+		timeText.attr({
+			"font-family":"microsoft yahei",
+			"font-size" : 12
+			, "text-anchor" : "start"
+			, "color": "#23cba6"
+			//, cursor : "pointer"
+		});
+		
+		//
+		node.tempemp = tempemp;
 	};
 	
 	// 计算树的大小,完全包装为新对象
@@ -453,6 +760,9 @@
 			var snode = subnodes[i];
 			// 迭代遍历, 如果还有子元素,则遍历子元素
 			paper.connectDept(pnode.rect, snode.rect, config, config.line_color)
+		}
+		if(pnode.tempemp){
+			paper.connectDept(pnode.rect, pnode.tempemp, config, config.line_color)
 		}
 	};
 	
@@ -979,7 +1289,7 @@
 				return {
 					'id' : node.orgid// 转换,      自定义ID, node.orgid
 					,
-					'text' : node.name	// 转换
+					'text' : node.name +"(" + (node.empnum||0) + ")"	// 转换
 				};
 			}
 		};

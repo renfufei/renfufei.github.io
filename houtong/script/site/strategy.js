@@ -1308,7 +1308,12 @@
 			//
 			var node = data.node;
 			//
-			var text = node.text;
+			var text = node.text || "";
+			//
+			if(text.indexOf("(") > 0){
+				var ind = text.indexOf("(");
+				text = text.substr(0, ind);
+			}
 			$current_org_name.text(text); 
 			// 
 			showDeptImage(node);
@@ -1324,6 +1329,10 @@
 				var node = root || {};
 				//
 				var text = node.text;
+			if(text.indexOf("(") > 0){
+				var ind = text.indexOf("(");
+				text = text.substr(0, ind);
+			}
 				$current_org_name.text(text); 
 				// 
 				showDeptImage(node);

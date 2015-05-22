@@ -74,7 +74,11 @@
 		fitPaperSize(paper, tree_with_xy, expand_level);
 		var tree = drawTree(paper, tree_with_xy, expand_level);
 		// 
-		refreshPaperZoom();
+		// refreshPaperZoom();
+		
+		// 校正位置
+		moveRootToCenter(paper, tree_with_xy);
+		
 		// 4. 绑定事件
 		
 		// 5. 绘制复选框等其他按钮
@@ -97,6 +101,36 @@
 			height = spanY;
 		}
 		paper.setSize(width, height);
+	};
+	// 校正位置
+	function moveRootToCenter(paper, tree_with_xy){
+		//
+		var rx = tree_with_xy.x;
+		var ry = tree_with_xy.y;
+		//
+		var startX = startX || global.config.left_paper;
+		var startY = startY || global.config.top_paper;
+		//
+		var spanX = tree_with_xy.spanX;
+		var spanY = tree_with_xy.spanY;
+		//
+		var pW = global.config.min_paper_width;
+		var pH = global.config.min_paper_height;
+		//
+		var dx =  rx - pW/2 + startX;
+		var dy =  ry - pH/2;
+		//
+		//
+		if(global.config.direction){
+			global.config.offset.y = dy;
+		} else {
+			global.config.offset.x = dx;
+		}
+		//
+		debug(global.config.offset);
+		//
+		refreshPaperZoom();
+		 
 	};
 	
 	// 根据node节点，获取 shape. 这是绘制单个节点
@@ -267,6 +301,25 @@
 			var $tipDiv = $temp.clone();
 			$tipDiv.attr("id", "tip_"+current);
 			$tipDiv.addClass("transient");
+			// 关闭事件
+			var $close = $tipDiv.find(".close");
+			//
+			$close.click(function(){
+				//$tipDiv.addClass("hide");
+				//$tipDiv.remove();
+				//$tipDiv = null;
+				if($tipMgr){
+					//
+					$tipMgr.remove();
+					$tipMgr = null;
+				} ;
+				if($tipEmp){
+					//
+					$tipEmp.remove();
+					$tipEmp = null;
+				}
+				
+			});
 			//
 			return $tipDiv;
 		};
@@ -551,8 +604,8 @@
 		if(subnodes && subnodes.length){
 			//有子元素,则返回上一级
 			if(parent && parent.text){
-				showDeptImage(parent);
-				return;
+				//showDeptImage(parent);
+				//return;
 			}
 		}
 		//
@@ -634,15 +687,16 @@
 		paper.clear();
 		
 		//
-		// 这是设置基础形状,需要进行封装
-		//var shape = drawDept(paper, node);
-		drawDeptTree(paper, node);
-		//
 		// 6. 重置一些值
     	global.config.prevposition=null;
     	global.config.downposition=null;
     	global.config.offset = {x: 0, y:0};
     	//
+		//
+		// 这是设置基础形状,需要进行封装
+		//var shape = drawDept(paper, node);
+		drawDeptTree(paper, node);
+		//
 		loadRaphaelProgressBar();
 	};
 	//
@@ -664,6 +718,7 @@
 		//
 		var fit = false;
 		//
+		debug(global.config.offset);
 		paper.setViewBox(x, y,nw, nh, fit);
 		//
 		$(".transient").remove();
@@ -823,7 +878,7 @@
                 if ($.util.isFullScreen()) {
                     $.util.cancelFullScreen();
                 } else {
-                    $.util.requestFullScreen();
+                    $.util.requestFullScreen("#holder");
                 }
             } else {
                 $.easyui.messager.show("当前浏览器不支持全屏 API，请更换至最新的 Chrome/Firefox/Safari 浏览器或通过 F11 快捷键进行操作。");
@@ -1243,17 +1298,17 @@ Raphael.fn.connectDept = function(pnode, snode, config, lineORcolor, bgColor) {
 			y : sEnd.y
 		};
 	}
-	var path = ["M", pStart.x.toFixed(3), pStart.y.toFixed(3),
+	var path0 = ["M", pStart.x.toFixed(3), pStart.y.toFixed(3),
 				"C", pBreak.x.toFixed(3), pBreak.y.toFixed(3),
 				sBreak.x.toFixed(3), sBreak.y.toFixed(3),
 				sEnd.x.toFixed(3), sEnd.y.toFixed(3),
 				].join(",");
 	
-	// var path1 = ["M", pStart.x.toFixed(3), pStart.y.toFixed(3),
-	// 			"L", pBreak.x.toFixed(3), pBreak.y.toFixed(3),
-	// 			"L", sBreak.x.toFixed(3), sBreak.y.toFixed(3),
-	// 			"L", sEnd.x.toFixed(3), sEnd.y.toFixed(3),
-	// 			].join(",");
+	 var path = ["M", pStart.x.toFixed(3), pStart.y.toFixed(3),
+	 			"L", pBreak.x.toFixed(3), pBreak.y.toFixed(3),
+	 			"L", sBreak.x.toFixed(3), sBreak.y.toFixed(3),
+	 			"L", sEnd.x.toFixed(3), sEnd.y.toFixed(3),
+	 			].join(",");
 	
 	// 判断,是新绘制,还是使用已有的线条和背景
 	if (lineORcolor && lineORcolor.linePath) {

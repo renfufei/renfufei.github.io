@@ -269,8 +269,8 @@
 		this.cursors && this.cursors.attr(attrdd);
 		//
 	}
-	// 获取/设置 value 值
-	ProgressBar.prototype.val = function(value) {
+	// 获取/设置 value 值; (value值, quiet安静模式不触发事件)
+	ProgressBar.prototype.val = function(value, quiet) {
 		if (0 === arguments.length) {//
 			// 不传入参数, 则get返回当前值
 			return this.value;
@@ -287,8 +287,29 @@
 		// 处理cursors
 		this.refreshCursor();
 		//
-		this.onchange && this.onchange(value);
+		if(!quiet){
+			this.onchange && this.onchange(value);
+		}
 		return this;
+	};
+	
+	// 增加 value 值; (value值, quiet安静模式不触发事件)
+	ProgressBar.prototype.add = function(value, quiet) {
+		//
+		value = value || 1;
+		var v = this.val();
+		this.val(v + value);
+		return this;
+	};
+	// 增加 1; (value值, quiet安静模式不触发事件)
+	ProgressBar.prototype.up = function(value, quiet) {
+		//
+		return this.add(1,quiet);
+	};
+	// 减小1; (quiet安静模式不触发事件)
+	ProgressBar.prototype.down = function(value, quiet) {
+		//
+		return this.add(-1,quiet);
 	};
 	//
 	ProgressBar.prototype._extends = _extends;

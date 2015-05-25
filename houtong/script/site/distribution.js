@@ -657,15 +657,46 @@ Raphael.fn.distributionPath = function(config) {
 	var top_paper = config.top_paper;
 	//
 	var xs = 2 * left_paper;
-	var xe = width - 2 * left_paper;
+	var xe = width + 2 * left_paper;
 	var ys = 2 * top_paper;
 	var ye = height - 2 * top_paper;
 	
+	//
+	
+    //
+    var pps = generatePoints();
+    // 画曲线
+    for(var i=0; i < pps.length; i++){
+    	//
+    	var ps = pps[i];
+    	//
+    	var color = "hsb(.6, .75, .75)";
+        var c = paper.path(ps).attr({stroke: color || Raphael.getColor(), "stroke-width": 4, "stroke-linecap": "round"});
+    }
+    // 画一条横线
+    var yLine = 3* top_paper + height;
+    paper.path(["M", xs - left_paper/5, yLine, "L", xe, yLine]).attr({stroke: "#000" || Raphael.getColor(), "stroke-width": 2, "stroke-linecap": "round"});
+    //
+    // 画竖线
+    
+    var lls = generateLines();
+    // 画曲线
+    for(var i=0; i < lls.length; i++){
+    	//
+    	var ll = lls[i];
+    	//
+    	var color = "#333";
+        var c = paper.path(ll).attr({stroke: color || Raphael.getColor(), "stroke-width": 4, "stroke-linecap": "round"});
+    }
+    
+	// 这个应该接收2个参数, xx 与 width; 方便偏移
     // 算比例
     function fnDistrinbution(i, sum){
     	//
     	var PI = Math.PI;
     	var res = Math.sin(PI*i/sum);
+    	//
+    	res = (res * res).toFixed(3);
     	//
     	return res;
     };
@@ -728,13 +759,52 @@ Raphael.fn.distributionPath = function(config) {
     	return points;
     };
     //
-    var pps = generatePoints();
+    // {width : 宽, height : "总的高度", i : "第几个点", sum 总的点数}
+    function calLine(width, height, i, sum){
+    	
+    	var padx = 190;
+    	var pady = 120;
+    	//
+    	// 计算
+    	//
+    	var x1 = width * i / sum + padx;
+    	var x2 = width * (i+1) / sum + padx;
+    	//
+    	// 根据X计算y
+    	var y1 = height * fnDistrinbution(i, sum) - pady;
+    	var y2 = height * fnDistrinbution(i+1, sum) - pady;
+    	//
+    	// 2 个关键点
+    	//
+    	var pk1 = {x: x1, y : height - y1};
+    	var pk2 = {x: x1, y : yLine};
+    	//
+    	
+    	// 计算
+    	//
+    	var p1 = ["M", pk1.x, pk1.y ,
+		    "L", pk2.x, pk2.y
+		    ];
+		//
+    	//
+    	return p1;
+    };
     //
-    for(var i=0; i < pps.length; i++){
+    function generateLines(){
+    	
+    	var lines = [];
     	//
-    	var ps = pps[i];
+    	var sum = 7;
+		
+    	for(var i = 0; i < sum; i++){
+    		//
+    		var ll = calLine(width, height, i, sum);
+    		// 
+    		
+    		//
+    		lines.push(ll);
+    	}
     	//
-    	var color = "hsb(.6, .75, .75)";
-        var c = paper.path(ps).attr({stroke: color || Raphael.getColor(), "stroke-width": 4, "stroke-linecap": "round"});
-    }
+    	return lines;
+    };
 };

@@ -796,7 +796,7 @@ Raphael.fn.distributionPath = function(config) {
     	//
     	var sum = 7;
 		
-    	for(var i = 0; i < sum; i++){
+    	for(var i = 0; i <= sum; i++){
     		//
     		var ll = calLine(width, height, i, sum);
     		// 

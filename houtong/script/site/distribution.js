@@ -178,26 +178,56 @@
     // 创建进度条
 	function loadRaphaelProgressBar() {
 		//
-        var holder1 = document.getElementById("holder1");
+		var data = [
+			{
+				id : "excellence"
+				, info : "卓越"
+				, color : "#6fdeee"
+				, value : 1
+			}
+			,
+			{
+				id : "good"
+				, info : "优秀"
+				, color : "#efde6e"
+				, value : 2
+			}
+			,
+			{
+				id : "well"
+				, info : "良好"
+				, color : "#ef0e6e"
+				, value : 8
+			}
+			,
+			{
+				id : "ok"
+				, info : "合格"
+				, color : "#0f0e6e"
+				, value : 2
+			}
+			,
+			{
+				id : "bad"
+				, info : "待改进"
+				, color : "#0f3e6e"
+				, value : 1
+			}
+		];
         //
-        var $holder1 = $("#holder1");
-        var pos = $holder1.offset();
         var config = {
-            	x : 10
-            	, y : 30
+            	x : 180
+            	, y : 390
+            	, width : 620
+            	, height : 10
+            	, data : data
             	, value : 10
-            	, vertical : 0
-            	, color : "#6fdeee"
-            	, element : holder1
-            	, fixsize : pos
+            	, paper : global.paper
             	, onchange : function(value){
             		// 回调函数
-					//global.config.zoom_num = value;
-					global.config.dist_height = value * 20;
-					drawDistribution();
           		}
         };
-        var pbar = Raphael.progressbar(config);
+        var pbar = Raphael.sizebar(config);
         global.pbar = pbar;
 	};
 
@@ -283,7 +313,7 @@
                 if ($.util.isFullScreen()) {
                     $.util.cancelFullScreen();
                 } else {
-                    $.util.requestFullScreen();
+                    $.util.requestFullScreen("#holder");
                 }
             } else {
                 $.easyui.messager.show("当前浏览器不支持全屏 API，请更换至最新的 Chrome/Firefox/Safari 浏览器或通过 F11 快捷键进行操作。");
@@ -680,14 +710,18 @@ Raphael.fn.distributionPath = function(config) {
     // 画竖线
     
     var lls = generateLines();
-    // 画曲线
+    var color = Raphael.getColor();
+    // 
     for(var i=0; i < lls.length; i++){
     	//
     	var ll = lls[i];
     	//
-    	var color = "#333";
-        var c = paper.path(ll).attr({stroke: color || Raphael.getColor(), "stroke-width": 4, "stroke-linecap": "round"});
+    	//var color = "#333";
+        var c = paper.path(ll).attr({stroke: color || Raphael.getColor(), "stroke-width": 3, "stroke-linecap": "round"});
     }
+    
+    // 绘制或更新底部的拖动标尺
+    
     
 	// 这个应该接收2个参数, xx 与 width; 方便偏移
     // 算比例
@@ -794,7 +828,7 @@ Raphael.fn.distributionPath = function(config) {
     	
     	var lines = [];
     	//
-    	var sum = 7;
+    	var sum = 5;
 		
     	for(var i = 0; i <= sum; i++){
     		//

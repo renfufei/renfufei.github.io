@@ -76,21 +76,13 @@
 					<div id="orginfo_tree"></div>
 				</div>
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-					<h1 class="page-header" id="current_org_name">组织架构图</h1>
 
 					<div class="btn-group " role="group" aria-label="Justified button group">
-						<a href="javascript:void(0)" id="btn_direction_toggle" class="btn btn-default" role="button">纵向显示</a>
 						<a href="javascript:void(0)" class="btn btn-default" role="button">显示设置</a>
 						<a href="javascript:void(0)" id="btn_fullscreen" class="btn btn-default" role="button">全屏显示</a>
 						<a href="javascript:void(0)" id="btn_export_image" class="btn btn-default" role="button">导出图片</a>
 					</div>
 
-					<div class="checkbox">
-						<label>
-							<input id="checkbox_expand_all" type="checkbox">
-							展开所有部门
-						</label>
-					</div>
 					<div class="table-responsive popup hide" id="popup_saveimage_area">
 						<button type="button" class="btn btn-link" id="btn_close_popup">
 							关闭
@@ -104,7 +96,7 @@
 						</div>
 					</div>
 					<div class="table-responsive" style="position: relative;">
-						<div id="holder1" style="width : 400px;	height: 90px;">
+						<div id="holder1" style="width : 400px;	height: 90px; display: none;">
 							
 						</div>
 						<div id="holder2">
@@ -142,7 +134,7 @@
 		<script src="script/site/ie10-viewport-bug-workaround.js"></script>
 		<!-- Execute The Raphael  -->
 		<script src="script/raphaeljs/raphael.js" type="text/javascript" charset="utf-8"></script>
-		<script src="script/raphaeljs/progressbar.js" type="text/javascript" charset="utf-8"></script>
+		<script src="script/raphaeljs/sizebar.js" type="text/javascript" charset="utf-8"></script>
 		<!-- 树插件 -->
 		<script src="script/jstree/jstree.min.js" type="text/javascript" charset="utf-8"></script>
 		<!-- canvg-->

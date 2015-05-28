@@ -227,11 +227,13 @@
 			that.cursorSet.push(cursor);
 			//
 			//
-			cursor.clone().attr({
+			var cc = cursor.clone().attr({
                 stroke: "#fff",
                 opacity: 1,
-                "stroke-width": w1
+                "stroke-width": 1
            });
+           // 加到 
+			that.cursorSet.push(cc);
 		}
 		//
 		// 修正 value

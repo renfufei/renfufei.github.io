@@ -1057,14 +1057,14 @@
 			$btn_direction_toggle.text(text_btn);
 			// 刷新部门树 ...
 			refreshDeptTree();
-		});
+		});        
 		//
         $btn_fullscreen.click(function () {
             if ($.util.supportsFullScreen) {
                 if ($.util.isFullScreen()) {
                     $.util.cancelFullScreen();
                 } else {
-                    $.util.requestFullScreen();
+                    $.util.requestFullScreen("#holder");
                 }
             } else {
                 $.easyui.messager.show("当前浏览器不支持全屏 API，请更换至最新的 Chrome/Firefox/Safari 浏览器或通过 F11 快捷键进行操作。");

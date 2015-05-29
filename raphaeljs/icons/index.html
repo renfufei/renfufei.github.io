@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Icons</title>
+        <style media="screen">
+            body {
+                background: #aaa;
+                font: 300 100.01%/1.4 "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+                color: #333;
+                margin: 40px;
+            }
+            #path {
+                font: 20px menlo, monospace;
+                width: 500px;
+                height: 50px;
+                position: absolute;
+                left: 45px;
+                top: 750px;
+                background: #333;
+                color: #aaa;
+                white-space: nowrap;
+                border: none;
+            }
+            #desc {
+                position: absolute;
+                top: 10px;
+                left: 580px;
+                width: 450px;
+                height: 300px;
+            }
+            #preview {
+                position: absolute;
+                top: 450px;
+                left: 580px;
+            }
+        </style>
+        <script src="../raphael.js"></script>
+        <script src="icons.js"></script>
+    </head>
+    <body>
+        <div id="desc">
+            <h1><span id="number">Free</span> Icons</h1>
+            <p>
+                These are icons I drew for my personal needs. They are all in vector and drawn on this page with <a href="//raphaeljs.com/">Raphaël</a> (don’t forget to zoom the page). I was thinking that they could be useful for other people and, although the design quality of icons is average, I am releasing them here under <a href="/license.html" rel="licence">MIT licence</a>.
+            </p>
+            <p>
+                Each icon is one path. Click on the icon to get the path string, then use it with Raphaël as easy as:<br>
+                <code>paper.path(&lt;you pathstring here&gt;).attr({fill: "#000", stroke: "none"});</code>
+            </p>
+            <p>
+                If you want to see them on the real page, check out <a href="//raphaeljs.com/">Raphaël</a> or <a href="//dmitry.baranovskiy.com/">my blog</a>. Note: some icons I took from public domain and logos are trademarked by their owners and yadda, yadda, yadda.
+            </p>
+            <p>
+                Hover preview for x‐ray view. ↓
+            </p>
+        </div>
+        <textarea id="path"></textarea>
+        <div id="preview"></div>
+    </body>
+</html>

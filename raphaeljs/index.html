@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<title>Raphaël—JavaScript Library</title>
+		<meta name="author" content="Dmitry Baranovskiy">
+		<meta name="description" content="Vector Graphics JavaScript Library">
+		<meta name="keywords" content="JavaScript Library, Raphael, SVG, VML">
+		<meta name="viewport" content="width=450">
+		<link rel="alternate" type="application/atom+xml" href="//twitter.com/statuses/user_timeline/17180567.atom">
+		<link rel="stylesheet" href="site.css">
+		<link rel="apple-touch-icon-precomposed" href="i114.png">
+		<link rel="shortcut icon" href="favicon16.png" type="image/x-icon">
+	</head>
+	<body class="raphael" id="raphael.dmitry.baranovskiy.com">
+		<div id="header">
+			<h1><span>&nbsp;</span>Raphaël—JavaScript Library</h1>
+		</div>
+		<div id="content">
+			<div id="top">
+				&nbsp;
+			</div>
+			<div id="column-1">
+				<h2 id="what-is-it"><span>&nbsp;</span>简介</h2>
+				<p>
+					Raphaël 是一个小型的 JavaScript 类库,能极大地简化web上的矢量图(vector graphics)处理. 
+					如果想要创建自定义的图表或图像产品,以及旋转组件，
+					那么，通过Raphaël可以很方便地实现这些需求.
+				</p>
+				<p class="not-prime">
+					Raphaël ['ræfeɪəl] uses the <abbr title="Sclable Vector Graphics">SVG</abbr><abbr title="World
+					Wide Web Consortium">W3C</abbr> Recommendation and <abbr title="Vector Markup Language">VML</abbr>
+					as a&nbsp;base for creating graphics. This means every graphical object you create is also
+					a&nbsp;<abbr title="Document Object Model">DOM</abbr> object, so you can attach JavaScript event
+					handlers or modify them later. Raphaël’s goal is to provide an adapter that will make drawing
+					vector art compatible cross-browser and easy.
+				</p>
+				<p class="not-prime">
+					Raphaël currently supports Firefox&nbsp;3.0+, Safari&nbsp;3.0+, Chrome&nbsp;5.0+, Opera&nbsp;9.5+
+					and Internet Explorer&nbsp;6.0+.
+				</p>
+				<h2 id="how-to-use-it"><span>&nbsp;</span>How to use it?</h2>
+				<p>
+					Download and include <code>
+						raphael.js</code>
+					into your HTML page, then use it as simple as:
+				</p>
+				<pre class="javascript code">
+<code><span class="c">// Creates canvas 320 × 200 at 10, 50</span>
+<b>var</b> paper <span class="s">=</span> Raphael(<span class="d">10</span>, <span class="d">50</span>, <span class="d">320</span>, <span class="d">200</span>);
+
+<span class="c">// Creates circle at x = 50, y = 40, with radius 10</span>
+<b>var</b> circle <span class="s">=</span> paper.circle(<span class="d">50</span>, <span class="d">40</span>, <span class="d">10</span>);
+<span class="c">// Sets the fill attribute of the circle to red (#f00)</span>
+circle.attr(<i>"fill"</i>, <i>"#f00"</i>);
+
+<span class="c">// Sets the stroke attribute of the circle to white</span>
+circle.attr(<i>"stroke"</i>, <i>"#fff"</i>);</code>
+</pre>
+				<h2 id="demo"><span>&nbsp;</span>Demos</h2>
+				<ul id="demos">
+					<li id="playground">
+						<a href="playground.html" title="Raphaël Playground">Raphaël Playground</a>
+					</li>
+					<li id="reflection">
+						<a href="reflection.html" title="Reflection">Reflection</a>
+					</li>
+					<li id="rotation1">
+						<a href="image-rotation.html" title="Image rotation">Image rotation</a>
+					</li>
+					<li id="rotation2">
+						<a href="text-rotation.html" title="Text rotation">Text rotation</a>
+					</li>
+					<li id="impact">
+						<a href="github/impact.html" title="GitHub-a-like impact chart">GitHub-a-like impact chart</a>
+					</li>
+					<li id="punch">
+						<a href="github/dots.html" title="GitHub-a-like punch chart">GitHub-a-like punch chart</a>
+					</li>
+					<li id="pie">
+						<a href="pie.html" title="GitHub-a-like languages chart">GitHub-a-like languages chart</a>
+					</li>
+					<li id="analytics">
+						<a href="analytics.html" title="Raphaël Analytics chart">Raphaël Analytics chart</a>
+					</li>
+					<li id="polar">
+						<a href="polar-clock.html" title="Polar Clock">Polar Clock</a>
+					</li>
+					<li id="spin">
+						<a href="spin-spin-spin.html" title="Dynamic Spinner">Dynamic Spinner</a>
+					</li>
+					<li id="australia">
+						<a href="australia.html" title="Australian Map">Australian Map</a>
+					</li>
+					<li id="helvetica">
+						<a href="helvetica.html" title="Dancing Helvetica">Dancing Helvetica</a>
+					</li>
+					<li id="chart">
+						<a href="chart.html" title="Multichart">Multichart</a>
+					</li>
+					<li id="animation">
+						<a href="animation.html" title="Animation">Animation</a>
+					</li>
+					<li id="tiger">
+						<a href="tiger.html" title="SVG “Hello World”">Tiger</a>
+					</li>
+					<li id="hand">
+						<a href="hand.html" title="Hand">Hand</a>
+					</li>
+					<li id="ichart">
+						<a href="ichart.html" title="Interactive Chart">Interactive Chart</a>
+					</li>
+					<li id="graffle">
+						<a href="graffle.html" title="Diagram">Diagram</a>
+					</li>
+					<li id="fonts">
+						<a href="fonts.html" title="Custom Fonts">Custom Fonts</a>
+					</li>
+					<li id="easing">
+						<a href="easing.html" title="Animation Easing">Animation Easing</a>
+					</li>
+					<li id="ball">
+						<a href="ball.html" title="Gradients Example">Gradients Example</a>
+					</li>
+					<li id="curver">
+						<a href="curver.html" title="Mini Illustrator">Curver</a>
+					</li>
+					<li id="gear">
+						<a href="gear.html" title="Animation along the path demo">Animation along the path demo</a>
+					</li>
+					<li id="scape">
+						<a href="/scape/" title="3D Shooter">3D Shooter</a>
+					</li>
+					<li id="picker">
+						<a href="picker.html" title="Colour Picker">Colour Picker</a>
+					</li>
+					<li id="growing-pie">
+						<a href="growing-pie.html" title="Growing Pie">Growing Pie</a>
+					</li>
+					<li id="bounce">
+						<a href="bounce.html" title="Bounce">Bounce</a>
+					</li>
+					<li id="world">
+						<a href="/world/" title="World Map">World Map</a>
+					</li>
+				</ul>
+			</div>
+			<div id="column-2">
+				<ul id="aside">
+					<li id="download">
+						<h2><a href="//github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js" title="Minified Library Code"><span>&nbsp;</span>Download v.&nbsp;2.1.2 (91&nbsp;Kb)</a></h2>
+						<p>
+							Our recommendation is to <abbr title="GNU ZIP">GZIP</abbr> it. It will help to reduce file size.
+						</p>
+						<p>
+							You can download <a href="//github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js" title="Uncompressed Library Code">uncompressed source (299&nbsp;Kb)</a> as well.
+						</p>
+					</li>
+					<li id="documentation">
+						<h2><a href="reference.html" title="Documentation"><span>&nbsp;</span>Documentation</a></h2>
+					</li>
+					<li id="discuss">
+						<h2><a href="//groups.google.com/group/raphaeljs" title="Google Group"><span>&nbsp;</span>Discussion Group</a></h2>
+					</li>
+					<!-- <li id="irc">
+					<h2><span>&nbsp;</span>IRC Channel</h2>
+					<p>#raphael.js at irc.freenode.net</p>
+					</li> -->
+					<li id="twitter">
+						<h2><a href="//twitter.com/RaphaelJS/" title="Twitter"><span>&nbsp;</span>Twitter</a></h2>
+					</li>
+					<li id="icons">
+						<h2><a href="./icons/index.html" title="Free icons"><span>&nbsp;</span>Free Icons</a></h2>
+					</li>
+					<li id="donate">
+						<h2><a href="//www.pledgie.com/campaigns/1776" title="Donate, but only if you like it"><span>&nbsp;</span>Donate</a></h2>
+					</li>
+					<li id="opensource">
+						<h2><a href="/license.html" rel="license" title="MIT License"><span>&nbsp;</span>MIT License</a></h2>
+					</li>
+					<li id="sencha">
+						<h2>Part of <strong><a href="//sencha.com/"><span>&nbsp;</span>Sencha Labs</a></strong></h2>
+					</li>
+					<li id="github">
+						<h2><a href="//github.com/DmitryBaranovskiy/raphael/" title="Source Code at GitHub"><span>&nbsp;</span>Source <em class="amp">&amp;</em> Bugs</a></h2>
+					</li>
+					<li id="t-shirts">
+						<h2><a href="//www.redbubble.com/people/dmitrybaranovsk/shop/raphaeljs+t-shirts" title="t-shirts for sale"><span>&nbsp;</span>T-shirts <em class="amp">&amp;</em> Stickers</a></h2>
+					</li>
+					<li id="quotes">
+						<h2><span>&nbsp;</span>Quotes on Twitter</h2>
+						<ol>
+							<li>
+								&nbsp;
+							</li>
+						</ol>
+					</li>
+				</ul>
+			</div>
+			<div id="footer">
+				<h3 id="copyright"><a href="http://raphaeljs.com/license.html" title="MIT License" rel="license">版权所有: </a> <a href="//dmitry.baranovskiy.com/">Dmitry Baranovskiy</a></h3>
+				<h3 id="font">Logo 设计: <a href="//wasabicube.com/">Wasabicube</a></h3>
+			</div>
+		</div>
+		<script src="raphael.js"></script>
+		<script src="site.js"></script>
+	</body>
+</html>

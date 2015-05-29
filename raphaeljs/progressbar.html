@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <title>进度条 - renfufei.com</title>
+        <style media="screen">
+            body {
+                color: #999;
+                margin: 0 30px;
+            }
+            #content {
+                width: 640px;
+                height: 280px;
+                position: relative;
+            }
+            #output {
+                background: #eee;
+                font-size: 30px;
+                font-family: monospace;
+            }
+        </style>
+        <script src="raphael.js"></script>
+        <script src="progressbar.js"></script>
+        <script>
+        // 加载完执行
+        Raphael(function () {
+            // 创建进度条
+            var holder = document.getElementById("holder");
+            var config = {
+            	x : 10
+            	, y : 30
+            	, vertical : 1
+            	, color : "#6fdeee"
+            	, element : holder
+            	, onchange : function(value){
+            		document.getElementById("output").value = value;
+            	}
+            };
+            var cp = Raphael.progressbar(config);
+            //
+            window.cp = cp;
+        });
+        </script>
+    </head>
+    <body>
+        <div id="content">
+        	<p></p>
+        	<div>
+            	<input type="text" id="output" value="1">
+        	</div>
+            <div id="holder"></div>
+        </div>
+    </body>
+</html>

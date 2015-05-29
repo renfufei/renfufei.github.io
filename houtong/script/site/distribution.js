@@ -37,6 +37,7 @@
 		svg : null
 		,paper : null
 		, pbar : null
+		, data : null
 		, config : __config
 		, currentCacheDept : null
 	};
@@ -102,7 +103,7 @@
     	global.config.downposition=null;
     	global.config.offset = {x: 0, y:0};
     	//
-		loadRaphaelProgressBar();
+		loadSizeBar();
 	};
 	//
 	
@@ -174,60 +175,35 @@
 		global.paper = paper;
 		global.svg = paper ? paper.canvas : null;
 	};
+	// 
 	
     // 创建进度条
-	function loadRaphaelProgressBar() {
+	function loadSizeBar() {
 		//
-		var data = [
-			{
-				id : "excellence"
-				, info : "卓越"
-				, color : "#6fdeee"
-				, value : 1
-			}
-			,
-			{
-				id : "good"
-				, info : "优秀"
-				, color : "#efde6e"
-				, value : 2
-			}
-			,
-			{
-				id : "well"
-				, info : "良好"
-				, color : "#ef0e6e"
-				, value : 8
-			}
-			,
-			{
-				id : "ok"
-				, info : "合格"
-				, color : "#0f0e6e"
-				, value : 2
-			}
-			,
-			{
-				id : "bad"
-				, info : "待改进"
-				, color : "#0f3e6e"
-				, value : 1
-			}
-		];
+		var data = getData();
         //
-        var config = {
+        var param = {
             	x : 180
-            	, y : 390
+            	, y : 500
             	, width : 620
             	, height : 10
             	, data : data
             	, value : 10
+            	, left_paper : global.config.left_paper
             	, paper : global.paper
-            	, onchange : function(value){
+            	, onchange : function(ndata){
             		// 回调函数
+            		if(!ndata){
+            			return;
+            		}
+            		// 算高度,刷新
+            		var h = getDistHeight(data) || global.config.dist_height;
+            		global.config.dist_height = h;
+            		// 刷新
+            		showDistributionImage();
           		}
         };
-        var pbar = Raphael.sizebar(config);
+        var pbar = Raphael.sizebar(param);
         global.pbar = pbar;
 	};
 
@@ -284,30 +260,6 @@
 		});
 		
 		//
-		$checkbox_expand_all.click(function() {
-			//
-			var checked = $checkbox_expand_all.attr('checked') || $checkbox_expand_all.prop("checked");
-			//
-			expandAllNodeStatus(checked);
-			// 刷新部门树 ...
-			refreshDeptTree();
-		});
-		//
-		$btn_direction_toggle.click(function() {
-			//
-			var direction = global.config.direction;
-			var text_btn = direction ?  "纵向显示" : "横向显示";
-			if(0 === direction){
-				global.config.direction = 1;
-			} else {
-				global.config.direction = 0;
-			}
-			//
-			$btn_direction_toggle.text(text_btn);
-			// 刷新部门树 ...
-			refreshDeptTree();
-		});
-		//
         $btn_fullscreen.click(function () {
             if ($.util.supportsFullScreen) {
                 if ($.util.isFullScreen()) {
@@ -324,32 +276,6 @@
 		// 闭包内的函数
 		function hidePopUp(){
 			$popup_saveimage_area.addClass("hide");
-		};
-		//
-		function processZoom(zoomUp){
-			//
-			if(global.pbar && global.pbar.val){
-				global.pbar.add(zoomUp);
-			} else {
-				//
-				//
-				var zoomNum = global.config.zoom_num;
-				//
-				if(zoomUp > 0){
-					// 放大
-					zoomNum --; // 这是相反的
-				} else {
-					zoomNum ++; // 这是相反的
-				}
-				//
-				if(zoomNum < 3){
-					zoomNum = 3;
-				} else if(zoomNum > 25){
-					zoomNum = 25;
-				}
-				global.config.zoom_num = zoomNum;
-				refreshPaperZoom();
-			}
 		};
 		//
 		$btn_close_popup.click(function(){
@@ -371,41 +297,8 @@
 	           hidePopUp();
 	           return stopEvent(e);
 	        }
-	        /**  CTRL + ??? 的情况  */
-	        if(e.ctrlKey){
-	        	// 监听鼠标滚轮.  CTRL + Up/Down 作为快捷键
-		        if (which === WHICH_UP) {
-		           // Ctrl + Up
-		           processZoom(1);
-		           return stopEvent(e);
-		        } else if (which === WHICH_DOWN) {
-		           // Ctrl + Down
-		           processZoom(-1);
-		           return stopEvent(e);
-		        }
-	        }
 	    });
 	    
-	    // 只监听 holder. 是否应该监听 svg元素? 先不管
-	    var $svg = $(global.svg);
-	    // 监听2个位置,依靠阻止事件传播
-	    global.svg && $svg.bind('mousewheel', mouseWheelHandler);
-	    $holder.bind('mousewheel', mouseWheelHandler);
-        //
-	    // 监听鼠标滚轮.  CTRL + Up/Down 作为快捷键
-        function mouseWheelHandler(event, delta, deltaX, deltaY) {
-        	// 
-        	if(event.ctrlKey){
-        		return; // Ctrl 键则取消
-        	}
-        	// 是否向上滚动
-        	var zoomUp = delta > 0 ? 1 : -1;
-        	
-        	processZoom(zoomUp);
-        	//
-            return stopEvent(event);
-        };
-        
         // 全局
         $(document).mouseup(function(e){ // 放开鼠标
         	global.config.prevposition=null;
@@ -467,7 +360,7 @@
     				deltaX : deltaX
     				, deltaY : deltaY
     			};
-    			dragRaphael(delta);
+    			//dragRaphael(delta);
     			//
     			global.config.prevposition=( current);
     		}
@@ -656,8 +549,6 @@ function stopEvent(e){
 };
 
 
-// 扩展 Raphael.fn, 成为插件
-
 
 // 获取宽高
 function wh(id){
@@ -670,10 +561,87 @@ function wh(id){
 	};
 };
 
+// 算高度的函数
+function getDistHeight(data){
+	//
+	var h =  0;
+	var len = data.length
+	for(var i =0; i < len; i++){
+		//
+		var d = data[i];
+		var v = d.value;
+		// TODO 怎么算?
+		var dis = len - Math.abs(len/2 -i);
+		//
+		h += Math.floor(dis) * v * 25 / len;
+		//
+	}
+	//
+	h = Math.round(h);
+	h = Math.abs(h);
+	if(h < 100){
+		h = 100;
+	}
+	if(h > 500){
+		h = 500;
+	}
+	return h;
+};
+
+//
+function getData(){
+	// 有则直接返回
+	var data = global.data;
+	if(data){
+		return data;
+	}
+	// 实际上需要到后台去请求
+	data = [
+		{
+			id : "excellence"
+			, info : "卓越"
+			, color : "#6fdeee"
+			, value : 1
+		}
+		,
+		{
+			id : "good"
+			, info : "优秀"
+			, color : "#0f0e6e"
+			, value : 2
+		}
+		,
+		{
+			id : "well"
+			, info : "良好"
+			, color : "#ef0e6e"
+			, value : 8
+		}
+		,
+		{
+			id : "ok"
+			, info : "合格"
+			, color : "#efde6e"
+			, value : 2
+		}
+		,
+		{
+			id : "bad"
+			, info : "待改进"
+			, color : "#0f3e6e"
+			, value : 1
+		}
+	];
+	//
+	global.data = data;
+	//
+	return data;
+};
 
 
 
 
+// 扩展 Raphael.fn, 成为插件
 // (父节点, 子节点, direction, 线条色, 线条内部填充色)
 Raphael.fn.distributionPath = function(config) {
 	// 方向
@@ -681,7 +649,7 @@ Raphael.fn.distributionPath = function(config) {
 	var paper = this;
 	var marginp = config.margin_parent;
 	var margins = config.margin_partner;
-	var height = config.dist_height || 200;
+	var height = getDistHeight(getData());
 	var width = config.dist_width || 500;
 	var left_paper = config.left_paper;
 	var top_paper = config.top_paper;

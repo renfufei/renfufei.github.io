@@ -15,8 +15,14 @@
 			y : 0,
 			width : 400,
 			height : 10,
+			left_paper : 0,
 			data : [], // 各个数据
 			weight : 1,  // 总权值
+			barSet : null,
+			textSet : null,
+			opacityCSet : null,
+			cursorSet : null,
+			currentDataChange : 0,
 			value : 1,
 			minvalue : 1,
 			maxvalue : 20,
@@ -31,13 +37,10 @@
 			linewidth : 1,
 			clinew : 1, //线宽度
 			backrect : null, // 背景rect
-			cursors : null, // 可拖动的小块, 集合
 			frontrect : null, // 前景rect, 在这个 rect 内部拖动
 			initcallchange : false, //是否触发初始回调
 			onchange : function(value) {}// 回调函数, 值改变时触发
 		});
-		//
-		//
 		//
 		return new SizeBar(param);
 	};
@@ -47,29 +50,19 @@
 		this._extends(param);
 		//
 		this.init();
-		// 处理水平
+		// 处理显示
 		this.processRender();
 		// 触发change完成事件
-		this.initcallchange && this.onchange && this.onchange(this.val());
+		this.initcallchange && this.onchange && this.onchange(this.data);
 	};
-	
+	//
+	SizeBar.prototype._extends = _extends;
 	// 初始化操作
 	SizeBar.prototype.init = function (){
 		// 处理初始值
-		this.val(this.value);
-		//
 		this.setData(this.data);
-		//
-		var csize31 = this.csize/3;
-		var csize32 = 2 * this.csize/3;
-		this.minx = Math.round(this.x - csize31);
-		this.maxx = Math.round(this.x + this.size - csize32);
-		
-		this.miny = Math.round(this.y - csize32);
-		this.maxy = Math.round(this.y + this.size - csize32);
 	};
 	
-	//
 	// 初始化Data
 	SizeBar.prototype.setData = function (data){
 		//
@@ -87,7 +80,6 @@
 		//
 		this.weight = weight;
 	};
-	
 	
 	// 渲染
 	SizeBar.prototype.processRender = function (){
@@ -109,9 +101,7 @@
 		var bh = that.height;
 		var weight = that.weight;
 		
-		
 		// 画多个矩形
-		
 		// 遍历 data
 		that.barSet = paper.set();
 		that.textSet = paper.set();
@@ -130,7 +120,7 @@
 			var rh = bh;
 			var rx = bx + dw;
 			var ry = by;
-			//
+			// 矩形条
 			var rect = paper.rect(rx, ry, rw, rh);
 			rect.attr({
 				stroke : color
@@ -140,23 +130,25 @@
 			rect._id = id;
 			that.barSet.push(rect);
 			
-			
 			// 文字
 			var tx = rx + rw /2;
 			var ty = ry - 10;
-			var radio = (value / weight) * 100;
+			var radio = Math.round((value / weight) * 100); // 这个还有点问题,加起来不到100
 			var text = info + " " + radio.toFixed(0) + "%";
 			//
 			var textEl = paper.text(tx, ty, text);
 			that.textSet.push(textEl);
+			// 
+			var tstyle = textEl.node.style;
+			tstyle.unselectable = "on";
+			tstyle.MozUserSelect = "none";
+			tstyle.WebkitUserSelect = "none";
 			//
 			// 累加
 			dw += rw;
 		}
-		
 		//
-		that.textSet.attr({"text-anchor": "middle"}); // 改变集合内所有 circle 的 fill 特性
-		
+		that.textSet.attr({"text-anchor": "middle"}); // 改变集合内所有   fill 特性
 		
 		// 画顶层矩形
 		that.frontrect = paper.rect(bx, by, bw, bh);
@@ -167,27 +159,7 @@
 			, opacity : 0 // 透明
 		});
 		//
-		that.frontrect.toFront();
-	
-		var style = that.frontrect.node.style;
-		style.unselectable = "on";
-		style.MozUserSelect = "none";
-		style.WebkitUserSelect = "none";
-		
-			//
-		// 拖动事件
-		that.frontrect.drag(function(dx, dy, _x, _y) {
-			that.docOnMove(dx, dy, _x, _y);
-			return false;
-		}, function(_x, _y) {
-			that.bOnTheMove = true;
-			var dd = _x - that.x;
-			that.setB(dd);
-			return false;
-		}, function() {
-			that.bOnTheMove = false;
-			return false;
-		});
+		//that.frontrect.toFront();
 	};
 	// 绘制滑块
 	SizeBar.prototype.drawCursor =  function (){
@@ -199,6 +171,7 @@
 		
 		// 遍历
 		that.cursorSet = paper.set();
+		that.opacityCSet = paper.set(); //
 		//
 		var barSet = that.barSet || [];
 		for(var i=1; i < barSet.length; i++){ // 从1 开始,0的不画
@@ -217,149 +190,126 @@
 			//
 			var cursor = paper.rect(cx, cy, cw, ch);
 			cursor.attr({
-				stroke : "#666"
+				stroke : "#222"
 				, fill : color
-				,opacity : 0.7
+				, opacity : 0.1
 				, r : 3
-				,"stroke-width" : 1
+				, "stroke-width" : 1
 			});
 			cursor._id = id;
 			that.cursorSet.push(cursor);
 			//
 			//
-			var cc = cursor.clone().attr({
-                stroke: "#fff",
+			var cc = cursor.clone().attr({ // 透明滑块,用来拖加拖动事件
+                stroke : "#888",
                 opacity: 1,
                 "stroke-width": 1
-           });
-           // 加到 
-			that.cursorSet.push(cc);
-		}
-		//
-		// 修正 value
+        	});
+			cc._id = id;
+        	// 加到 
+			that.opacityCSet.push(cc);
+			// 使用闭包绑定事件
+			bindCCEvent(that, cc);
+			
+		} // end for
 		
-		
-		
-		// 可拖动的小块
-		that.cursors = that.paper.set();
-		that.cursors.push(
-			that.paper.rect(cx, cy, cw, ch, that.radius)
-				.attr({
-					stroke : "#000",
-					opacity : .5,
-					"stroke-width" : that.linewidth
-				})
-			);
-		that.cursors.push(that.cursors[0].clone().attr({
-			stroke : "#80c4ee",
-			opacity : 1,
-			"stroke-width" : that.clinew
-		}));
 	};
 	
 	// 移动处理
-	SizeBar.prototype.docOnMove = function(dx, dy, _x, _y) {
-		if (this.bOnTheMove) {
+	// {dx: 从按下拖动时到此时的x值改变; dy: y改变; _x: }
+	SizeBar.prototype.ccOnMove = function(cc, dx, dy, _x, _y) {
+		if (this.ccOnMoving) {
 			//
-			var dd = _x - this.x;
+			var nx = _x -  this.x - this.left_paper + this.height;
+			
+			// 判断超出边界
+			if(nx < this.x){
+				nx = this.x;
+			}
+			var maxX = this.x + this.width;
+			if(nx > maxX){
+				nx = maxX;
+			}
+			// TODO 边界还需要处理前后范围
 			//
-			this.setB(dd);
+			this.setCursor(cc, nx);
+			// 边动边改
+			this.processDataChange(cc, dx, nx); 
+		
+		} else {
+			//
 		}
-	};
-	// 设置 Bar条
-	SizeBar.prototype.setB = function(_dd) {
-		// 修正
-		// 回调
-		var ratio = this.getRatio(_dd);//// 比例
-		var v = this.minvalue + Math.round( (this.maxvalue - this.minvalue) * ratio);
-		//
-		var dd = _dd - this.size2/2;
-		//
-		// 判断超出边界
-		var attrdd = {};
-			dd < this.minx && ( dd = this.minx);
-			dd > this.maxx && ( dd = this.maxx);
-			attrdd = {x : dd };
-		
-		// 移动进度条的显示位置
-		this.cursors.attr(attrdd);
-		this.val(v);
-		this.onchange && this.onchange(this.val());
-	};
-	SizeBar.prototype.getRatio = function(_dd) {
-		
-			_dd < this.miny && ( _dd = this.miny);
-			_dd > this.maxy && ( _dd = this.maxy);
-			// 回调
-			var ratio = (_dd - this.miny) / (this.maxy - this.miny); // 比例
-		
-		//
-		return ratio;
-	};
-	SizeBar.prototype.refreshCursor = function() {
-		//
-		// 修正 value
-		var v = this.size * (this.value / (this.maxvalue - this.minvalue));
-		
-		var cx = Math.round(this.x - this.csize*4/3);
-		//var cy = this.y - this.padding;
-		var cy = Math.round(this.y - this.csize*4/3);
-		//
-		
-		// 判断
-		var attrdd = {};
-		
-			cx = cx + v;
-			attrdd = {x : cx };
-		
-		// 移动进度条的显示位置
-		this.cursors && this.cursors.attr(attrdd);
-		//
-	}
-	// 获取/设置 value 值; (value值, quiet安静模式不触发事件)
-	SizeBar.prototype.val = function(value, quiet) {
-		if (0 === arguments.length) {//
-			// 不传入参数, 则get返回当前值
-			return this.value;
-		}
-		// 判断是数字 ....判断最大最小值
-		if (value > this.maxvalue) {
-			value = this.maxvalue;
-		}
-		if (value < this.minvalue) {
-			value = this.minvalue;
-		}
-		// set设置
-		this.value = value;
-		// 处理cursors
-		this.refreshCursor();
-		//
-		if(!quiet){
-			this.onchange && this.onchange(value);
-		}
-		return this;
 	};
 	
-	// 增加 value 值; (value值, quiet安静模式不触发事件)
-	SizeBar.prototype.add = function(value, quiet) {
+	//
+	SizeBar.prototype.processDataChange = function(cc, dx, nx) {
+		// cc, cursor, rect, text, data
 		//
-		value = value || 1;
-		var v = this.val();
-		this.val(v + value);
-		return this;
+		var change = (dx/this.width) * this.weight;
+		change = Math.round(change);
+		if(change == 0){
+			//return;
+		}
+		// 移除上次的影响
+		change = change - this.currentDataChange;
+		if(change == 0){
+			return;
+		}
+		//
+		var id = cc._id;
+		var barSet = this.barSet;
+		var targetBar = searchById(barSet, id, "_id");
+		var targetBarIndex = searchIndexById(barSet, id, "_id");
+		
+		// 左边的
+		var prevBar = barSet[targetBarIndex-1];
+		
+		//
+		var targetData = searchById(this.data, id, "id");
+		var targetDataIndex = searchIndexById(this.data, id, "id");
+		var prevData = this.data[targetDataIndex-1];
+		
+		//
+		prevData.value = prevData.value + change;
+		targetData.value = targetData.value - change;
+		
+		//
+		this.currentDataChange += change;
+		this.onchange && this.onchange(this.data);
 	};
-	// 增加 1; (value值, quiet安静模式不触发事件)
-	SizeBar.prototype.up = function(value, quiet) {
+	
+	
+	// 设置 Bar条 的位置
+	SizeBar.prototype.setCursor = function(cc, nx) {
+		// 移动进度条的显示位置
+		cc.attr({
+			x : nx
+		});
 		//
-		return this.add(1,quiet);
+		var id = cc._id;
+		var cursor = searchById(this.cursorSet, id , "_id");
+		cursor && cursor.attr({ x : nx});
 	};
-	// 减小1; (quiet安静模式不触发事件)
-	SizeBar.prototype.down = function(value, quiet) {
-		//
-		return this.add(-1,quiet);
+	
+	//
+	function bindCCEvent(that, cc){
+		// 事件
+		cc.drag(function(dx, dy, _x, _y,e) {
+			// onmove
+			that.ccOnMove(cc, dx, dy, _x, _y);
+			return stopEvent(e);
+		}, function(e_x, e_y, e) { //onstart
+			that.ccOnMoving = true;
+			that.currentDataChange = 0;
+			//
+			return stopEvent(e);
+		}, function(e) { // onend
+			that.ccOnMoving = false;
+			// 放开以后,刷新
+			return stopEvent(e);
+		});
 	};
 	//
-	SizeBar.prototype._extends = _extends;
 	// 继承. 工具方法
 	function _extends(obj1, obj2) {
 		//
@@ -378,6 +328,55 @@
 		}
 		//
 		return obj2;
+	};
+	// 停止事件.
+	function stopEvent(e){
+		if(!e){
+			return;
+		}
+		if(e.stopPropagation){
+			e.stopPropagation();
+		}
+		if(e.preventDefault){
+			e.preventDefault();
+		}
+		//
+		return false;
+	};
+	
+	// 根据ID取得set中的值
+	function searchById(set, id, idKey){
+		var result = _searchElementAndIndexById(set, id, idKey);
+		return result.element;
+	};
+	function searchIndexById(set, id, idKey){
+		var result = _searchElementAndIndexById(set, id, idKey);
+		return result.index;
+	};
+	function _searchElementAndIndexById(set, id, idKey){
+		//
+		var result = {
+				index : -1,
+				element : null
+		};
+		if(!set || !id){
+			return result;
+		}
+		if(!idKey){
+			idKey = "id";
+		}
+		//
+		for(var i=0; i< set.length; i++){
+			var el = set[i];
+			var _id = el[idKey];
+			if(_id == id){
+				result.index = i;
+				result.element = el;
+				break;
+			}
+		}
+		//
+		return result;
 	};
 
 })(window.Raphael);

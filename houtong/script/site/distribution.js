@@ -19,6 +19,7 @@
 		offset : {x: 0, y:0},
 		dist_height : 200, // 正态分布图的高度
 		dist_width : 600,
+		showDistributionImage : showDistributionImage,
 		//
 		direction : 1, //拓扑方向. 0为从左到右, 1为从上到下
 		zoom_num : 10, // 缩放倍数,小数. 数字越小则距离屏幕前的你越近,显示越大
@@ -26,7 +27,7 @@
 		expand_all : 0,	  // 展开所有
 		min_paper_width : 800,
 		min_paper_height : 600,
-		left_paper : 100, // 最左上角的 paper
+		left_paper : 200, // 最左上角的 paper
 		top_paper : 50,
 		line_color : "#3333ff", // 连线的颜色
 		//
@@ -36,7 +37,7 @@
 	var global = {
 		svg : null
 		,paper : null
-		, pbar : null
+		, sbar : null
 		, data : null
 		, config : __config
 		, currentCacheDept : null
@@ -57,7 +58,6 @@
 		// 绘制曲线
 		//
 		paper.distributionPath(global.config);
-		
 		
 		// 
 		refreshPaperZoom();
@@ -102,8 +102,6 @@
     	global.config.prevposition=null;
     	global.config.downposition=null;
     	global.config.offset = {x: 0, y:0};
-    	//
-		loadSizeBar();
 	};
 	//
 	
@@ -177,35 +175,6 @@
 	};
 	// 
 	
-    // 创建进度条
-	function loadSizeBar() {
-		//
-		var data = getData();
-        //
-        var param = {
-            	x : 180
-            	, y : 500
-            	, width : 620
-            	, height : 10
-            	, data : data
-            	, value : 10
-            	, left_paper : global.config.left_paper
-            	, paper : global.paper
-            	, onchange : function(ndata){
-            		// 回调函数
-            		if(!ndata){
-            			return;
-            		}
-            		// 算高度,刷新
-            		var h = getDistHeight(data) || global.config.dist_height;
-            		global.config.dist_height = h;
-            		// 刷新
-            		showDistributionImage();
-          		}
-        };
-        var pbar = Raphael.sizebar(param);
-        global.pbar = pbar;
-	};
 
 	// 将svg保存为png
 	function saveSVGToPNG(imgId) {
@@ -299,112 +268,7 @@
 	        }
 	    });
 	    
-        // 全局
-        $(document).mouseup(function(e){ // 放开鼠标
-        	global.config.prevposition=null;
-        	global.config.downposition=null;
-        }); 
-        $holder.mousedown(function(e){ // 按下鼠标
-        	//
-        	var screenX = e.screenX;
-        	var screenY = e.screenY;
-        	//
-        	var downposition = {
-        		screenX : screenX
-        		,screenY: screenY
-        	};
-        	//
-        	global.config.downposition=( downposition);
-        }).mouseup(function(e){ // 放开鼠标
-        	global.config.prevposition=null;
-        	global.config.downposition=null;
-        }).mouseout(function(e){ // 鼠标离开
-        	//global.config.downposition=null;
-        }).mouseleave(function(e){ // 鼠标离开
-        	//global.config.downposition=null;
-        }).mousemove(function(e){ // 鼠标移动
-        	//
-        	var screenX = e.screenX;
-        	var screenY = e.screenY;
-        	//
-        	var current = {
-        		screenX : screenX
-        		,screenY: screenY
-        	};
-        	//
-        	var prevposition = global.config.prevposition;
-        	var downposition = global.config.downposition;
-        	if(!downposition){
-        		return;
-        	}
-        	if(!prevposition || !prevposition.screenX){
-        		prevposition = downposition;
-        	}
-        	//
-        	if(!prevposition || !prevposition.screenX){
-        		return; // 没有按下什么,返回
-        	}
-        	//
-    		var pX = prevposition.screenX;
-    		var pY = prevposition.screenY;
-    		//
-    		var deltaX = pX - screenX;
-    		var deltaY = pY - screenY;
-    		//
-    		var min = 5;
-    		if(deltaX > min || deltaX < -1*min 
-    			|| deltaY > min || deltaY < -1*min){
-    			// 移动超过 min 个像素
-    			
-    			var delta = {
-    				deltaX : deltaX
-    				, deltaY : deltaY
-    			};
-    			//dragRaphael(delta);
-    			//
-    			global.config.prevposition=( current);
-    		}
-        });
         
-        //
-        function dragRaphael(delta){
-        	if(!delta){
-        		return;
-        	}
-			//
-			var paper = global.paper;
-			var zoomNum = global.config.zoom_num;
-			//
-			var width = paper.width;
-			var height = paper.height;
-			//
-			var x = global.config.offset.x || 0;
-			var y = global.config.offset.y || 0;
-			//
-			x += delta.deltaX;
-			y += delta.deltaY;
-			// 判断x, y的合理性
-			var times = 0.7;
-			//
-			if(x < -1*width*times){
-				x =  -1*width*times;
-			}
-			if(x > width*times){
-				x =  width*times;
-			}
-			if(y < -1*height*times){
-				y =  -1*height*times;
-			}
-			if(y > height*times){
-				y =  height*times;
-			}
-			//
-			global.config.offset.x = x;
-			global.config.offset.y = y;
-			var fit = false;
-			//
-			refreshPaperZoom();
-        };
 	}; // end of bindEvents
 	
 	//
@@ -579,6 +443,7 @@ function getDistHeight(data){
 	//
 	h = Math.round(h);
 	h = Math.abs(h);
+	h += 100;
 	if(h < 100){
 		h = 100;
 	}
@@ -644,23 +509,32 @@ function getData(){
 // 扩展 Raphael.fn, 成为插件
 // (父节点, 子节点, direction, 线条色, 线条内部填充色)
 Raphael.fn.distributionPath = function(config) {
-	// 方向
-	//
+	
 	var paper = this;
-	var marginp = config.margin_parent;
-	var margins = config.margin_partner;
+    
+    // 绘制或更新底部的拖动标尺
+	loadSizeBar();
+	
 	var height = getDistHeight(getData());
 	var width = config.dist_width || 500;
 	var left_paper = config.left_paper;
 	var top_paper = config.top_paper;
+	var min_paper_height = config.min_paper_height;
 	//
-	var xs = 2 * left_paper;
-	var xe = width + 2 * left_paper;
-	var ys = 2 * top_paper;
-	var ye = height - 2 * top_paper;
+	var xs = left_paper;
+	var xe = xs + width;
+	//var ys = top_paper;
+	//var ye = ys + height;
 	
-	//
-	
+    // 画一条横线
+    // 这条线固定,不与  height 挂钩 
+    var yLine = 3* top_paper + height;
+    //
+    yLine = min_paper_height - 150;
+    //
+    paper.path(["M", left_paper - 10, yLine, "L", xe + 10, yLine]).attr({stroke: "#000" || Raphael.getColor(), "stroke-width": 2, "stroke-linecap": "round"});
+    //
+    
     //
     var pps = generatePoints();
     // 画曲线
@@ -671,14 +545,9 @@ Raphael.fn.distributionPath = function(config) {
     	var color = "hsb(.6, .75, .75)";
         var c = paper.path(ps).attr({stroke: color || Raphael.getColor(), "stroke-width": 4, "stroke-linecap": "round"});
     }
-    // 画一条横线
-    var yLine = 3* top_paper + height;
-    paper.path(["M", xs - left_paper/5, yLine, "L", xe, yLine]).attr({stroke: "#000" || Raphael.getColor(), "stroke-width": 2, "stroke-linecap": "round"});
-    //
     // 画竖线
-    
     var lls = generateLines();
-    var color = Raphael.getColor();
+    var color = "#111" || Raphael.getColor();
     // 
     for(var i=0; i < lls.length; i++){
     	//
@@ -687,8 +556,6 @@ Raphael.fn.distributionPath = function(config) {
     	//var color = "#333";
         var c = paper.path(ll).attr({stroke: color || Raphael.getColor(), "stroke-width": 3, "stroke-linecap": "round"});
     }
-    
-    // 绘制或更新底部的拖动标尺
     
     
 	// 这个应该接收2个参数, xx 与 width; 方便偏移
@@ -704,37 +571,20 @@ Raphael.fn.distributionPath = function(config) {
     };
     // {width : 宽, height : "总的高度", i : "第几个点", sum 总的点数}
     function calDist(width, height, i, sum){
-    	
-    	var padx = 190;
-    	var pady = 120;
-    	//
     	// 计算
     	//
-    	var x1 = width * i / sum + padx;
-    	var x2 = width * (i+1) / sum + padx;
+    	var x1 = width * i / sum + left_paper;
+    	var x2 = width * (i+1) / sum + left_paper;
     	//
     	// 根据X计算y
-    	var y1 = height * fnDistrinbution(i, sum) - pady;
-    	var y2 = height * fnDistrinbution(i+1, sum) - pady;
+    	var y1 = height * fnDistrinbution(i, sum) + top_paper/2;
+    	var y2 = height * fnDistrinbution(i+1, sum) + top_paper/2;
     	//
     	// 2 个关键点
-    	//
-    	var pk1 = {x: x1, y : height - y1};
-    	var pk2 = {x: x2, y : height - y2};
-    	//
-    	// 2个辅助点
-    	var ph1 = {x: pk1.x + padx, y : pk1.y};
-    	var ph2 = {x: pk2.x - padx, y : pk2.y};
+    	var pk1 = {x: x1, y : yLine - y1};
+    	var pk2 = {x: x2, y : yLine - y2};
     	
-    	// 计算
-    	
-    	//
-    	//
     	var p1 = ["M", pk1.x, pk1.y];
-    	var p2 = [
-		    "C", 
-		    ph1.x, ph1.y, ph2.x, ph2.y, pk2.x, pk2.y
-		    ];
 		//
 		var p2 = ["S", pk1.x, pk1.y, pk2.x, pk2.y];
 		//
@@ -752,8 +602,6 @@ Raphael.fn.distributionPath = function(config) {
     	for(var i = 0; i < sum; i++){
     		//
     		var pn = calDist(width, height, i, sum);
-    		// 
-    		
     		//
     		points.push(pn);
     	}
@@ -764,21 +612,20 @@ Raphael.fn.distributionPath = function(config) {
     // {width : 宽, height : "总的高度", i : "第几个点", sum 总的点数}
     function calLine(width, height, i, sum){
     	
-    	var padx = 190;
-    	var pady = 120;
     	//
     	// 计算
     	//
-    	var x1 = width * i / sum + padx;
-    	var x2 = width * (i+1) / sum + padx;
+    	var x1 = width * i / sum + left_paper;
+    	var x2 = width * (i+1) / sum + left_paper;
     	//
     	// 根据X计算y
-    	var y1 = height * fnDistrinbution(i, sum) - pady;
-    	var y2 = height * fnDistrinbution(i+1, sum) - pady;
+    	var y1 = height * fnDistrinbution(i, sum) + top_paper/2;
+    	var y2 = height * fnDistrinbution(i+1, sum) + top_paper/2;
+    	
     	//
     	// 2 个关键点
     	//
-    	var pk1 = {x: x1, y : height - y1};
+    	var pk1 = {x: x1, y : yLine - y1};
     	var pk2 = {x: x1, y : yLine};
     	//
     	
@@ -796,17 +643,45 @@ Raphael.fn.distributionPath = function(config) {
     	
     	var lines = [];
     	//
-    	var sum = 5;
+    	var sum = getData().length;
 		
     	for(var i = 0; i <= sum; i++){
     		//
     		var ll = calLine(width, height, i, sum);
     		// 
-    		
     		//
     		lines.push(ll);
     	}
     	//
     	return lines;
     };
+    
+    // 创建进度条
+	function loadSizeBar() {
+		//
+		var data = getData();
+        //
+        var param = {
+            	x : 180
+            	, y : config.min_paper_height - 100
+            	, width : 620
+            	, height : 10
+            	, data : data
+            	, value : 10
+            	, left_paper : config.left_paper
+            	, paper : paper
+            	, onchange : function(ndata){
+            		// 回调函数
+            		if(!ndata){
+            			return;
+            		}
+            		// 算高度,刷新
+            		var h = getDistHeight(data) || config.dist_height;
+            		config.dist_height = h;
+            		// 刷新
+            		config.showDistributionImage();
+          		}
+        };
+        var sbar = Raphael.sizebar(param);
+	};
 };

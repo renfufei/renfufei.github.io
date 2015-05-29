@@ -220,7 +220,7 @@
 	SizeBar.prototype.ccOnMove = function(cc, dx, dy, _x, _y) {
 		if (this.ccOnMoving) {
 			//
-			var nx = _x -  this.x - this.left_paper + this.height;
+			var nx = _x -  this.x - this.left_paper/2 + this.height;
 			
 			// 判断超出边界
 			if(nx < this.x){
@@ -270,8 +270,8 @@
 		var prevData = this.data[targetDataIndex-1];
 		
 		//
-		prevData.value = prevData.value + change;
-		targetData.value = targetData.value - change;
+		prevData && (prevData.value = prevData.value + change);
+		targetData && (targetData.value = targetData.value - change);
 		
 		//
 		this.currentDataChange += change;

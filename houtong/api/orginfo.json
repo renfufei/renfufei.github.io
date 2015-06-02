@@ -46,7 +46,34 @@
 						"opened": 0,
 						"selected": 0
 					},
-					"children": []
+					"children": [
+						{
+							"orgid": "121",
+							"text": "财务一部",
+							"linkman": "财务1经理",
+							"linktitle": "经理一",
+							"snorder": 121,
+							"empnum": 2,
+							"state": {
+								"opened": 0,
+								"selected": 0
+							},
+							"children": []
+						}
+						, {
+							"orgid": "122",
+							"text": "财务二部",
+							"linkman": "财务2经理",
+							"linktitle": "经理二",
+							"snorder": 122,
+							"empnum": 0,
+							"state": {
+								"opened": 0,
+								"selected": 0
+							},
+							"children": []
+						}
+					]
 				}
 				, {
 					"orgid": "130",

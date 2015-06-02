@@ -27,6 +27,12 @@
 		left_paper : 100, // 最左上角的 paper
 		top_paper : 50,
 		line_color : "#3333ff", // 连线的颜色
+		prevNodePositionInfo : {
+			//展开某个节点时的位置信息
+			enable : false
+			, bbox : null
+			, prevoffset : null
+		}, 
 		//
 		orginfo_json_url : 'api/orginfo.json'
 	};
@@ -79,6 +85,9 @@
 		// 校正位置
 		moveRootToCenter(paper, tree_with_xy);
 		
+		// 3.1 校正点击加号展开时自身位置不改变的问题
+		fixExpandNodePosition(paper, tree_with_xy);
+		
 		// 4. 绑定事件
 		
 		// 5. 绘制复选框等其他按钮
@@ -105,6 +114,67 @@
 	// 校正位置
 	function moveRootToCenter(paper, tree_with_xy){
 		//
+		var dxdy = calcDxDy(tree_with_xy);
+		//
+		dx = dxdy.dx;
+		dy = dxdy.dy;
+		//
+		if(global.config.direction){
+			//global.config.offset.y = dy;
+		} else {
+			//global.config.offset.x = dx;
+		}
+			global.config.offset.y = dy;
+			global.config.offset.x = dx;
+		//
+		refreshPaperZoom();
+		 
+	};
+	// 清空缓存的这个值.
+	function clearExpandNodePosition(){
+		if(global.config.prevNodePositionInfo){
+			global.config.prevNodePositionInfo.enable = false; // 不启用
+			global.config.prevNodePositionInfo.bbox = null; // 置空
+			global.config.prevNodePositionInfo.prevoffset = null; // 置空
+			global.config.prevNodePositionInfo.prevnode = null;
+		}
+	};
+	// 设置展开节点的信息保存
+	function setExpandNodePosition(rect){
+		if(!rect){
+			return;
+		}
+		clearExpandNodePosition();
+		//
+		var node = rect.datanode;
+		var bbox = rect.getBBox();
+		
+		//
+		var paper = global.paper;
+		//
+		//
+		var config = global.config;
+		//
+		var prevRootXY = getPrevRootXY();
+		var dxdy = calcDxDy(prevRootXY);
+		// 克隆
+		var offset = {
+			x : config.offset.x
+			, y : config.offset.y
+		};
+		//
+		var prevNodePositionInfo = {
+				enable : true // 启用
+				,bbox : bbox  // 设值
+				, prevoffset : offset	// 之前的offset
+				, dxdy : dxdy
+				, prevnode : node
+			};
+		//
+		global.config.prevNodePositionInfo = prevNodePositionInfo;
+	};
+	function calcDxDy(tree_with_xy){
+		//
 		var rx = tree_with_xy.x;
 		var ry = tree_with_xy.y;
 		//
@@ -118,19 +188,63 @@
 		var pH = global.config.min_paper_height;
 		//
 		var dx =  rx - pW/2 + startX;
-		var dy =  ry - pH/2;
+		var dy =  ry - pH/2 + startY;
+		
 		//
-		//
-		if(global.config.direction){
-			global.config.offset.y = dy;
+		// 在计算中心点偏移量时,就根据 direction 固定偏移少的那一边的x,y偏移
+		if(global.config.direction){ // 根据方向决定
+			dx = 0; // 强制不使用计算值
 		} else {
-			global.config.offset.x = dx;
+			dy = 0;
 		}
 		//
-		debug(global.config.offset);
+		var dxdy = {
+			dx: dx
+			,dy: dy
+		};
+		return dxdy;
+	};
+	// 根据 root 获取相对偏移,修正
+	function fixExpandNodePosition(paper, tree_with_xy){
+		// 
+		var config = global.config;
+		var prevNodePositionInfo = config.prevNodePositionInfo;
+		if(!prevNodePositionInfo || !prevNodePositionInfo.enable){
+			savePrevRootXY(tree_with_xy);
+			return; // 没有相应的信息,则不往下执行.
+		}
 		//
+		var prevoffset = prevNodePositionInfo.prevoffset;
+		var dxdy = prevNodePositionInfo.dxdy;
+		
+		//
+		var _dx = dxdy.dx;
+		var _dy = dxdy.dy;
+		//
+		var _ox = prevoffset.x;
+		var _oy = prevoffset.y;
+		// 取得点击加号以前的拖动偏移量
+		var _x = _ox - _dx;
+		var _y = _oy - _dy;
+		
+		config.offset.y += _y;
+		config.offset.x += _x; 
+		//
+		config.prevNodePositionInfo = null;
+		savePrevRootXY(tree_with_xy);
 		refreshPaperZoom();
-		 
+		
+		return;
+		
+	};
+	function getPrevRootXY(){
+		return global.config.prevRootXY;
+	};
+	function savePrevRootXY(prevRoot){
+		if(!prevRoot){
+			return;
+		}
+		global.config.prevRootXY = prevRoot;
 	};
 	
 	// 根据node节点，获取 shape. 这是绘制单个节点
@@ -217,6 +331,7 @@
 				 to_expand_status = 1;
 			}
 			//
+			setExpandNodePosition(rect);
 			// 改变状态,刷新
 			node.treenode &&( node.treenode.to_expand_status = to_expand_status);
 			refreshDeptTree();
@@ -718,7 +833,6 @@
 		//
 		var fit = false;
 		//
-		debug(global.config.offset);
 		paper.setViewBox(x, y,nw, nh, fit);
 		//
 		$(".transient").remove();

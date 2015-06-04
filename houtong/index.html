@@ -81,7 +81,7 @@
 					<div class="fullscreen_area">
 					<div class="btn-group " role="group" aria-label="Justified button group">
 						<a href="javascript:void(0)" id="btn_direction_toggle" class="btn btn-default" role="button">纵向显示</a>
-						<a href="javascript:void(0)" class="btn btn-default" role="button">显示设置</a>
+						<a href="javascript:void(0)" id="btn_deptshow" class="btn btn-default" role="button">显示设置</a>
 						<a href="javascript:void(0)" id="btn_fullscreen" class="btn btn-default" role="button">全屏显示</a>
 						<a href="javascript:void(0)" id="btn_export_image" class="btn btn-default" role="button">导出图片</a>
 					</div>
@@ -133,6 +133,14 @@
 		 		<li class="emp"><img src="image/e_24.png" /><span>王涛</span></li>
 		 		<li class="emp"><img src="image/e_24.png" /><span>王涛</span></li>
 		 	</ul>
+		 </div>
+		<div id="showconfig_area" class="showconfig hide">
+		 	<div>
+		 		<input type="checkbox" id="showmgrtitle"/> 显示负责人职位 <br/>
+		 		<input type="checkbox" id="showmgrname"/> 显示负责人姓名 <br/>
+		 		<br/>
+		 		<button id="btn_save_showconfig">确定</button>
+		 	</div>
 		 </div>
 
 		<!-- Bootstrap core JavaScript

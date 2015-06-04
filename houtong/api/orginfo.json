@@ -2,8 +2,8 @@
 	"noteinfo": "可以是这种类型的数据拓扑,也可以使用 parent 字段,从数据库直接导出[]记录",
 	"orgid": "1",
 	"text": "厚通集团",
-	"linkman": "董事长",
-	"linktitle": "X董事",
+	"linktitle": "董事长",
+	"linkman": "X董事",
 	"snorder": 1,
 	"state": {
 		"opened": 1,
@@ -13,8 +13,8 @@
 		{
 			"orgid": "100",
 			"text": "北京厚通益和管理咨询有限公司",
-			"linkman": "总经理",
-			"linktitle": "X总",
+			"linktitle": "总经理",
+			"linkman": "X总",
 			"snorder": 100,
 			"empnum": 16,
 			"state": {
@@ -25,8 +25,8 @@
 				{
 					"orgid": "110",
 					"text": "人力资源部",
-					"linkman": "人力经理",
-					"linktitle": "李丽",
+					"linktitle": "人力经理",
+					"linkman": "李丽",
 					"snorder": 110,
 					"empnum": 4,
 					"state": {
@@ -38,8 +38,8 @@
 				, {
 					"orgid": "120",
 					"text": "财务部",
-					"linkman": "财务经理",
-					"linktitle": "王涛",
+					"linktitle": "财务经理",
+					"linkman": "王涛",
 					"snorder": 120,
 					"empnum": 2,
 					"state": {
@@ -50,8 +50,8 @@
 						{
 							"orgid": "121",
 							"text": "财务一部",
-							"linkman": "财务1经理",
-							"linktitle": "经理一",
+							"linktitle": "财务1经理",
+							"linkman": "经理一",
 							"snorder": 121,
 							"empnum": 2,
 							"state": {
@@ -63,8 +63,8 @@
 						, {
 							"orgid": "122",
 							"text": "财务二部",
-							"linkman": "财务2经理",
-							"linktitle": "经理二",
+							"linktitle": "财务2经理",
+							"linkman": "经理二",
 							"snorder": 122,
 							"empnum": 0,
 							"state": {
@@ -78,8 +78,8 @@
 				, {
 					"orgid": "130",
 					"text": "咨询部",
-					"linkman": "咨询总监",
-					"linktitle": "王瑜",
+					"linktitle": "咨询总监",
+					"linkman": "王瑜",
 					"snorder": 130,
 					"empnum": 4,
 					"state": {
@@ -90,8 +90,8 @@
 						{
 							"orgid": "131",
 							"text": "咨询一部",
-							"linkman": "咨询经理",
-							"linktitle": "经理一",
+							"linktitle": "咨询经理",
+							"linkman": "经理一",
 							"snorder": 131,
 							"empnum": 2,
 							"state": {
@@ -103,8 +103,8 @@
 						, {
 							"orgid": "132",
 							"text": "咨询二部",
-							"linkman": "咨询经理",
-							"linktitle": "经理二",
+							"linktitle": "咨询经理",
+							"linkman": "经理二",
 							"snorder": 132,
 							"empnum": 0,
 							"state": {
@@ -120,8 +120,8 @@
 		, {
 			"orgid": "200",
 			"text": "北京厚通益和科技有限公司",
-			"linkman": "总经理",
-			"linktitle": "X总",
+			"linktitle": "总经理",
+			"linkman": "X总",
 			"snorder": 200,
 			"empnum": 10,
 			"state": {
@@ -132,8 +132,8 @@
 				{
 					"orgid": "210",
 					"text": "人力资源部",
-					"linkman": "人力经理",
-					"linktitle": "X经理",
+					"linktitle": "人力经理",
+					"linkman": "X经理",
 					"snorder": 210,
 					"empnum": 2,
 					"state": {
@@ -145,8 +145,8 @@
 				, {
 					"orgid": "220",
 					"text": "财务核算中心",
-					"linkman": "财务总监",
-					"linktitle": "X总监",
+					"linktitle": "财务总监",
+					"linkman": "X总监",
 					"snorder": 220,
 					"empnum": 2,
 					"state": {
@@ -158,8 +158,8 @@
 				, {
 					"orgid": "230",
 					"text": "研发中心",
-					"linkman": "研发经理",
-					"linktitle": "X经理",
+					"linktitle": "研发经理",
+					"linkman": "X经理",
 					"snorder": 230,
 					"empnum": 6,
 					"state": {
@@ -171,8 +171,8 @@
 				, {
 					"orgid": "230",
 					"text": "销售中心",
-					"linkman": "销售总监",
-					"linktitle": "X总监",
+					"linktitle": "销售总监",
+					"linkman": "X总监",
 					"snorder": 230,
 					"empnum": 2,
 					"state": {
@@ -184,8 +184,8 @@
 				, {
 					"orgid": "230",
 					"text": "服务中心",
-					"linkman": "服务经理",
-					"linktitle": "X经理",
+					"linktitle": "服务经理",
+					"linkman": "X经理",
 					"snorder": 230,
 					"empnum": 2,
 					"state": {

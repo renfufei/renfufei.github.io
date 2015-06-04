@@ -8,9 +8,9 @@
 	// 
 	var __config = {
 		_note_info : "默认配置信息,这堆配置信息,可以通过后台配置来覆盖",
-		width_dept : 185, // 宽
-		height_dept : 100,
-		padding_dept : 25,
+		width_dept : 200, // 宽
+		height_dept : 110,
+		padding_dept : 12,
 		radius_dept : 10,
 		margin_parent : 45, // 间距
 		margin_partner : 28,
@@ -23,6 +23,11 @@
 		zoom_num : 10, // 缩放倍数,小数. 数字越小则距离屏幕前的你越近,显示越大
 		expand_level : 2, // 展开级别,展开全部,则设置为100即可
 		expand_all : 0,	  // 展开所有
+		show_mgr_title : 1, // 显示部门经理title
+		show_mgr_name : 1, // 显示部门经理 name
+		mgr_src : "./image/m_36.png",
+		emp_src : "./image/e_36.png",
+		mgr_emp_size : 18,
 		min_paper_width : 800,
 		min_paper_height : 600,
 		left_paper : 100, // 最左上角的 paper
@@ -320,6 +325,7 @@
 			exp_char.attr({
 				"font-size": 18
 			});
+			unselect(exp_char);
 		} else {
 			// 不绘制. 0
 		}
@@ -360,61 +366,92 @@
 			stroke : color,
 			"fill-opacity" : 0.3,
 			"stroke-width" : 2
-			//,cursor : "pointer"
 		});
 		// 设置字体
 		var font = paper.getFont("Times", 800); //Times
 		// 2. 绘制部门信息
 		var text = node.text;
+		var tx = x_s + pad;
+		var ty = y_s + pad;
 		if(text.length > 8){
 			text = text.substr(0,8) + "\n" + text.substr(8);
+			ty += pad;
 		}
-		var nameText = paper.text(x_s + w/2, y_s + pad, text);
-		
+		var nameText = paper.text(tx, ty, text);
 		//var nameText = paper.print(x_s + w/2, y_s + pad, text, font, 30);
 		
 		nameText.dblclick(dbclickHandler);
 		nameText.datanode = node;
 		nameText.attr({
-			"font-family":"microsoft yahei",
+			"font-family": "microsoft yahei",
+			"font-weight": "bold",
+			"text-anchor": "start",
 			"font-size" : 16,
-			cursor : "pointer"
+			cursor : "default"
 		});
+		unselect(nameText);
 		
 		// 3. 绘制部门经理
+		//
+		var show_mgr_title = global.config.show_mgr_title;
+		var show_mgr_name = global.config.show_mgr_name;
+		
 		var original = node.original || {};
 		//
 		var linkman = original.linkman;
 		var linktitle = original.linktitle;
 		//
 		var linkinfo = "";
-		if(linkman){
+		if(show_mgr_title && linktitle){
+			linkinfo += linktitle ;
+		}
+		if(show_mgr_title && show_mgr_name && linktitle && linkman){
+			linkinfo += "（" ;
+		}
+		if(show_mgr_name && linkman){
 			linkinfo += linkman; 
 		}
-		if(linktitle){
-			linkinfo += "("+ linktitle +")";
+		if(show_mgr_title && show_mgr_name && linktitle && linkman){
+			linkinfo += "）" ;
 		}
-		var linkText = paper.text(x_s + 10, y_e - 40 , linkinfo);
-		linkText.attr({
-			"font-family":"microsoft yahei",
-			"font-size" : 14
-			, "text-anchor" : "start"
-			//, cursor : "pointer"
-		});
-		linkText.dblclick(dbclickHandler);
-		linkText.datanode = node;
-		
-		// 职位图标
-		var iconMan = getIconMan();
-		var manEle = paper.path(iconMan).attr(
-			{
-			fill: "#333388"
-			, stroke: "none"
-			, cursor : "pointer"
+		//
+		var linkx = x_s + w/2;
+		var linky = y_s + h/2 + pad/2;
+		// 如果缩放比例太小,则不显示
+		//
+		if(global.config.zoom_num > 6){
+			
+			var linkText = paper.text(linkx, linky , linkinfo);
+			linkText.dblclick(dbclickHandler);
+			linkText.datanode = node;
+			linkText.attr({
+				"font-family":"microsoft yahei"
+				, "font-size" : 14
+				, "text-anchor" : "middle"
 			});
-		manEle.scale(0.5, 0.5);
-		manEle.translate(x_e*2 - 65,  y_e*2- 55);
+			unselect(linkText);
+		}
 		
+		// 4. 职位图标 
+		var msrc = global.config.mgr_src;
+		var mw = global.config.mgr_emp_size;
+		var mh = global.config.mgr_emp_size;
+		var mx = x_s + pad;
+		var my = y_e - pad/2 - mh;
+		var manEle = paper.image(msrc, mx, my, mw, mh);
+		iconcursor(manEle);
+		//
+		var fsize= 14;
+		var mnx = mx + pad + mw;
+		var mny = my +  fsize - pad/2;
+		var manText = paper.text(mnx, mny , "1").attr({
+			"font-family":"microsoft yahei"
+			, "font-size" : fsize
+			, "text-anchor" : "middle"
+			, "font-weight": "bold"
+			, "color" : "white"
+		});
+		unselect(manText);
 		//
 		// 可能后期用来做模板
 		var $tipDivTempMgr = $("#tip_holder_template_mgr");
@@ -437,12 +474,12 @@
 				//$tipDiv.remove();
 				//$tipDiv = null;
 				if($tipMgr){
-					//
+					// 移除同一个作用域内的,即同一个部门的弹出窗
 					$tipMgr.remove();
 					$tipMgr = null;
 				} ;
 				if($tipEmp){
-					//
+					// 移除同一个作用域内的,即同一个部门的弹出窗
 					$tipEmp.remove();
 					$tipEmp = null;
 				}
@@ -451,8 +488,8 @@
 			//
 			return $tipDiv;
 		};
+		
 		//
-		paper.text(x_e - 32, y_e - 12 , "1");
 		var needRemove = 0;
 		var manTipsClick = function(x,y,z){
 			//
@@ -482,15 +519,27 @@
 		
 		// 职员图标
 		var iconPc = getIconPC();
-		var pcEle = paper.path(iconPc).attr(
-			{
-				fill: "#333388"
-				, stroke: "#333388"
-				, cursor : "pointer"
-			});
-		pcEle.scale(0.5, 0.5);
-		pcEle.translate(x_e *2- 120,  y_e * 2- 55);
-		paper.text(x_e - 10, y_e - 12 , "");
+		
+		var esrc = global.config.emp_src;
+		var ew = mw;
+		var eh = mh;
+		var ex = x_e - 2*pad - ew;
+		var ey = my -2;
+		var pcEle = paper.image(esrc, ex, ey, ew, eh);
+		iconcursor(pcEle);
+		
+		//
+		var fsize= 14;
+		var enx = ex + pad/2 + ew;
+		var eny = mny;
+		var pcText = paper.text(enx, eny , "2").attr({
+			"font-family":"microsoft yahei"
+			, "font-size" : fsize
+			, "text-anchor" : "middle"
+			, "font-weight": "bold"
+			, "color" : "white"
+		});
+		unselect(pcText);
 		//
 		var pcTipsClick = function(x,y,z){
 			//
@@ -958,6 +1007,8 @@
 		var $btn_direction_toggle = $("#btn_direction_toggle");
 		var $checkbox_expand_all = $("#checkbox_expand_all");
 		var $btn_fullscreen = $("#btn_fullscreen");
+		var $btn_deptshow = $("#btn_deptshow");
+		var $btn_save_showconfig = $("#btn_save_showconfig");
 		var $savedimg_anchor = $("#savedimg_anchor");
 		var $popup_saveimage_area = $("#popup_saveimage_area");
 		var $btn_close_popup = $("#btn_close_popup");
@@ -1011,7 +1062,66 @@
                 $.easyui.messager.show("当前浏览器不支持全屏 API，请更换至最新的 Chrome/Firefox/Safari 浏览器或通过 F11 快捷键进行操作。");
             }
         });
-		//
+		// 
+        $btn_deptshow.click(function (e) {
+        	//
+            var showmgrtitle = global.config.show_mgr_title ? true: false;
+            var showmgrname = global.config.show_mgr_name ? true: false;
+            
+            $showconfig = $("#showconfig_area");
+            //
+        	var pos = $(this).offset();
+            //
+            var _left = pos.left + 15;
+            var _top = pos.top + 40;
+            //
+            $showconfig.css({
+            	"top" : _top + "px",
+            	"left": _left + "px"
+            });
+            $showconfig.removeClass("hide");
+            
+            // 设置值
+            var $showmgrtitle = $("#showmgrtitle");
+            var $showmgrname = $("#showmgrname");
+            //
+            if($showmgrtitle.prop){
+            	$showmgrtitle.prop("checked", showmgrtitle);
+            } else {
+            	$showmgrtitle.attr("checked", showmgrtitle);
+            }
+            if($showmgrname.prop){
+            	$showmgrname.prop("checked", showmgrname);
+            } else {
+            	$showmgrname.attr("checked", showmgrname);
+            }
+            //
+        });
+        $btn_save_showconfig.click(function (e) {
+            // TODO
+            $showconfig = $("#showconfig_area");
+            //
+            var $showmgrtitle = $("#showmgrtitle");
+            var $showmgrname = $("#showmgrname");
+            //
+            var showmgrtitle = $showmgrtitle.prop("checked") || $showmgrtitle.attr("checked");
+            var showmgrname = $showmgrname.prop("checked") || $showmgrname.attr("checked");
+            //
+            if(showmgrtitle){
+	            global.config.show_mgr_title=1;
+            } else {
+	            global.config.show_mgr_title=0;
+            }
+            if(showmgrname){
+	            global.config.show_mgr_name=1;
+            } else {
+	            global.config.show_mgr_name=0;
+            }
+            //
+            $showconfig.addClass("hide");
+			// 刷新部门树 ...
+			refreshDeptTree();
+        });
 		
 		// 闭包内的函数
 		function hidePopUp(){
@@ -1488,12 +1598,32 @@ function wh(id){
 	};
 };
 
-// 图标的path
-function getIconMan(){
-	var iconMan = "M14.423,12.17c-0.875,0.641-1.941,1.031-3.102,1.031c-1.164,0-2.231-0.391-3.104-1.031c-0.75,0.625-1.498,1.519-2.111,2.623c-1.422,2.563-1.578,5.192-0.35,5.874c0.549,0.312,1.127,0.078,1.723-0.496c-0.105,0.582-0.166,1.213-0.166,1.873c0,2.938,1.139,5.312,2.543,5.312c0.846,0,1.265-0.865,1.466-2.188c0.2,1.314,0.62,2.188,1.461,2.188c1.396,0,2.545-2.375,2.545-5.312c0-0.66-0.062-1.291-0.168-1.873c0.6,0.574,1.176,0.812,1.726,0.496c1.227-0.682,1.068-3.311-0.354-5.874C15.921,13.689,15.173,12.795,14.423,12.17zM11.32,12.201c2.361,0,4.277-1.916,4.277-4.279s-1.916-4.279-4.277-4.279c-2.363,0-4.28,1.916-4.28,4.279S8.957,12.201,11.32,12.201zM21.987,17.671c1.508,0,2.732-1.225,2.732-2.735c0-1.51-1.225-2.735-2.732-2.735c-1.511,0-2.736,1.225-2.736,2.735C19.251,16.446,20.477,17.671,21.987,17.671zM25.318,19.327c-0.391-0.705-0.869-1.277-1.349-1.677c-0.56,0.41-1.24,0.659-1.982,0.659c-0.744,0-1.426-0.25-1.983-0.659c-0.479,0.399-0.958,0.972-1.35,1.677c-0.909,1.638-1.009,3.318-0.224,3.754c0.351,0.2,0.721,0.05,1.101-0.317c-0.067,0.372-0.105,0.775-0.105,1.197c0,1.878,0.728,3.396,1.625,3.396c0.54,0,0.808-0.553,0.937-1.398c0.128,0.841,0.396,1.398,0.934,1.398c0.893,0,1.627-1.518,1.627-3.396c0-0.422-0.04-0.825-0.107-1.197c0.383,0.367,0.752,0.52,1.104,0.317C26.328,22.646,26.227,20.965,25.318,19.327z";
-	var iconM = "M20.1,4.039c-0.681,1.677-2.32,2.862-4.24,2.862c-1.921,0-3.56-1.185-4.24-2.862L1.238,8.442l2.921,6.884l3.208-1.361V28h17.099V14.015l3.093,1.312l2.922-6.884L20.1,4.039z";
-	return iconM;
+// 文字样式不允许选择
+function unselect(element){
+	if(!element || !element.node || !element.attr){return element;}
+    var style = element.node.style || {};
+    style.unselectable = "on";
+    style.MozUserSelect =  "none";
+    style.WebkitUserSelect= "none";
+    //
+	element.attr({
+		"font-family": "microsoft yahei",
+		cursor : "default"
+	});
+	return element;
 };
+
+function iconcursor(element){
+	if(!element || !element.attr){return element;}
+	element.attr(
+		{
+			cursor : "pointer"
+			, stroke: "none"
+		});
+	return element;
+};
+
+// 图标的path
 function getIconPC(){
 	var iconPc  = "M28.936,2.099H2.046c-0.506,0-0.919,0.414-0.919,0.92v21.097c0,0.506,0.413,0.919,0.919,0.919h17.062v-0.003h9.828c0.506,0,0.92-0.413,0.92-0.921V3.019C29.854,2.513,29.439,2.099,28.936,2.099zM28.562,20.062c0,0.412-0.338,0.75-0.75,0.75H3.062c-0.413,0-0.75-0.338-0.75-0.75v-16c0-0.413,0.337-0.75,0.75-0.75h24.75c0.412,0,0.75,0.337,0.75,0.75V20.062zM20.518,28.4c-0.033-0.035-0.062-0.055-0.068-0.062l-0.01-0.004l-0.008-0.004c0,0-0.046-0.021-0.119-0.062c-0.108-0.056-0.283-0.144-0.445-0.237c-0.162-0.097-0.32-0.199-0.393-0.271c-0.008-0.014-0.035-0.079-0.058-0.17c-0.083-0.32-0.161-0.95-0.22-1.539h-7.5c-0.023,0.23-0.048,0.467-0.076,0.691c-0.035,0.272-0.073,0.524-0.113,0.716c-0.02,0.096-0.039,0.175-0.059,0.23c-0.009,0.025-0.018,0.05-0.024,0.062c-0.003,0.006-0.005,0.01-0.007,0.013c-0.094,0.096-0.34,0.246-0.553,0.36c-0.107,0.062-0.209,0.11-0.283,0.146c-0.074,0.037-0.119,0.062-0.119,0.062l-0.007,0.004l-0.008,0.004c-0.01,0.009-0.038,0.022-0.07,0.062c-0.031,0.037-0.067,0.103-0.067,0.185c0.002,0.002-0.004,0.037-0.006,0.088c0,0.043,0.007,0.118,0.068,0.185c0.061,0.062,0.143,0.08,0.217,0.08h9.716c0.073,0,0.153-0.021,0.215-0.08c0.062-0.063,0.068-0.142,0.068-0.185c-0.001-0.051-0.008-0.086-0.007-0.088C20.583,28.503,20.548,28.439,20.518,28.4z";
 	var iconF = "M28.625,26.75h-26.5V8.375h1.124c1.751,0,0.748-3.125,3-3.125c3.215,0,1.912,0,5.126,0c2.251,0,1.251,3.125,3.001,3.125h14.25V26.75z";

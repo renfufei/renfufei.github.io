@@ -8,12 +8,13 @@
 	// 
 	var __config = {
 		_note_info : "默认配置信息,这堆配置信息,可以通过后台配置来覆盖",
-		width_dept : 200, // 宽
+		width_dept : 185, // 宽
 		height_dept : 100,
 		padding_dept : 25,
 		radius_dept : 10,
 		margin_parent : 45, // 间距
-		margin_partner : 30,
+		margin_partner : 28,
+		exp_radius : 8, // 展开按钮的半径大小
 		downposition : null,
 		prevposition : null,
 		offset : {x: 0, y:0},
@@ -297,16 +298,28 @@
 			var exp_x = pRight.x;
 			var exp_y = pRight.y;
 		}
+		//exp_radius
+		var exp_radius = global.config.exp_radius;
+		var charExp = "";
 		if(1 == expand_status){
-			// 绘制展开状态, -号
-			var charExp = "-";
-			var exp_circle = paper.circle(exp_x, exp_y, 5);
-			var exp_char = paper.text(exp_x, exp_y, charExp);
+			// 展开状态, -号
+			charExp = "-";
 		} else if(2 == expand_status){
-			// 绘制收缩状态, +号
+			// 收缩状态, +号
 			var charExp = "+";
-			var exp_circle = paper.circle(exp_x, exp_y, 5);
+		}
+		//
+		if(1 == expand_status || 2 == expand_status){
+			// 绘制展开状态/收缩状态, +号
+			var exp_circle = paper.circle(exp_x, exp_y, exp_radius);
 			var exp_char = paper.text(exp_x, exp_y, charExp);
+			//
+			exp_circle.attr({
+				"stroke-width": 2
+			});
+			exp_char.attr({
+				"font-size": 18
+			});
 		} else {
 			// 不绘制. 0
 		}
@@ -1336,6 +1349,7 @@ Raphael.fn.connectDept = function(pnode, snode, config, lineORcolor, bgColor) {
 	var direction = config.direction || 0 ;
 	var marginp = config.margin_parent;
 	var margins = config.margin_partner;
+	var exp_radius = config.exp_radius;
 	// 取得颜色
 	var color = typeof lineORcolor == "string" ? lineORcolor : "#000";
 	//
@@ -1391,24 +1405,36 @@ Raphael.fn.connectDept = function(pnode, snode, config, lineORcolor, bgColor) {
 	// Number.toFixed(dn); 在数字小数点 后面补dn个0
 	if(0 == direction){
 		var pStart  = pDown;
+		var pStart  = {
+			x : pDown.x + 1,
+			y : pDown.y + exp_radius/3 + 1
+		};
 		var pBreak  = {
 			x : pStart.x,
-			y : pStart.y + marginp/2
+			y : pStart.y + marginp/2 - exp_radius
 		};
 		var sEnd = sUp;
+		var sEnd = {
+			x: sUp.x + 1,
+			y: sUp.y
+		};
 		var sBreak = {
 			x : sEnd.x,
-			y : pStart.y + marginp/2 // y 保持一致
+			y : pBreak.y  // y 保持一致
 		};
 	} else {
 		var pStart  = pRight;
+		var pStart  = {
+			x : pRight.x + + exp_radius/3 + 1,
+			y : pRight.y
+		};
 		var pBreak  = {
-			x : pStart.x + marginp/2,
+			x : pStart.x + marginp/2 - exp_radius,
 			y : pStart.y
 		};
 		var sEnd = sLeft;
 		var sBreak = {
-			x : pStart.x + marginp/2, // x 保持一致
+			x : pBreak.x , // x 保持一致
 			y : sEnd.y
 		};
 	}

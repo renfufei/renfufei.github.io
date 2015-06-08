@@ -1,0 +1,309 @@
+@CHARSET "UTF-8";
+
+* {
+	margin: 0px; padding: 0px;
+}
+
+body {
+	background: aliceblue;
+}
+
+.header {
+	height: 100px; background: blueviolet;
+}
+
+.footer {
+	height: 100px; background: blueviolet;
+}
+
+.clear,.cl {
+	display: block !important; float: none !important; clear: both; width: auto !important; max-width: none !important; min-width: 0 !important; max-height: none !important; min-height: 0 !important; overflow: hidden; margin: 0 !important; padding: 0 !important; border: 0 none !important; font-size: 0 !important; line-height: 0 !important;
+}
+
+.main {
+	width: 800px; margin-left: auto; margin-right: auto; border: 1px solid blueviolet; border-bottom: 0px; border-top: 0px; padding: 20px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.t {
+	width: 100px; display: block; height: 35px; line-height: 35px;
+}
+
+.input {
+	height: 33px; width: 530px; background: transparent; border: 1px solid blueviolet; line-height: 27px;
+}
+
+.select {
+	height: 33px; width: 532px; background: transparent; border: 1px solid blueviolet;
+}
+
+.s_info span {
+	display: block; height: 26px;
+}
+
+.box {
+	width: 100px; height: 25px; float: left;
+}
+
+.city_all {
+	width: 700px; margin-left: 108px; margin-top: -26px; height: 1400px;
+}
+
+.si {
+	margin-top: -33px; margin-left: 108px;
+}
+
+.s_line {
+	text-align: center; margin-top: 50px;
+}
+
+.back,.submit {
+	width: 126px; height: 32px; margin-left: 29px;
+}
+
+.s_info {
+	margin-left: 107px;
+}
+
+.s_info span {
+	height: 33px; line-height: 33px;
+}
+
+#careersType {
+	width: 816px; height: 400px; display: none; border-top: 1px solid #fff; position: absolute; background: #fff; border: 1px solid #c8c8c8;
+}
+
+.subcate {
+	display: none;
+}
+
+.jobcatebox {
+	width: 100%; height: 100%;
+}
+
+th {
+	font-size: 14px; width: 20%; text-align: right; color: #585858;
+}
+
+.jobcatelist li {
+	list-style: none; height: 25px; color: #2255DD; font-family: arial, 宋体; position: relative; float: left; width: 23%; font-size: 14px; position: relative;
+}
+
+.jobcatelist p span {
+	float: left; padding: 0 12px 0 10px; text-align: left; background: url(http://pic2.58.com/ui7/job/hire/hire_sp_ico.gif) right /*-147px*/                                                           -153px no-repeat; color: #2255DD; cursor: pointer;
+}
+
+.subcate {
+	position: absolute; z-index: 1; left: 0px; width: 480px; background: #fff; border: 2px solid #C8C8C8; padding: 8px 0; top: 20px;
+}
+
+.subcate a {
+	list-style: none; cursor: auto; color: #2255DD; text-decoration: none; width: 130px; padding: 2px 15px; float: left; display: inline;
+}
+
+.jobcatelist li p {
+	width: 155px;
+	/* padding: 2px 2px 0; */ padding: 2px; overflow: hidden; zoom: 1;
+}
+
+.hover {
+	position: relative; z-index: 2; border: 2px solid #C8C8C8; border-bottom: none; padding: 0 0 2px; background: #fff; overflow: hidden; zoom: 1;
+}
+
+.jobcatelist .scr {
+	left: auto; right: -19px;
+}
+
+.d_info {
+	height: 300px;
+}
+
+.textarea {
+	height: 295px;
+}
+
+p.tm {
+	height: 42px; line-height: 42px; position: relative; border-bottom: 1px blueviolet solid; margin-bottom: 10px;
+}
+
+span.title {
+	font-size: 22px; font-weight: bold;
+}
+
+span.c {
+	position: absolute; right: 18px;
+}
+
+
+.manger .btns {
+	text-align: center; margin: 12px 0px;
+}
+
+/* 弹出框 公用 */
+.full-overlay,.blank-overlay,.temp-overlay {
+	position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 99999; display: none; background: #000000; opacity: 0
+}
+
+.lt9 .full-overlay,.lt9 .blank-overlay,.lt9 .temp-overlay {
+	filter: alpha(opacity = 0)
+}
+
+.blank-overlay {
+	z-index: 105000
+}
+
+.temp-overlay {
+	z-index: 130000; display: block; opacity: .3
+}
+
+.lt9 .temp-overlay {
+	filter: alpha(opacity = 30)
+}
+
+.edit-pop {
+	position: fixed; top: 50%; left: 50%; z-index: 110000; display: none; border-radius: 5px; border: 1px solid #cecece; background: #ffffff; box-shadow: 0 0 16px rgba(0, 0, 0, .35)
+}
+
+.edit-pop .inner,.temp-upload-pop .inner {
+	padding: 18px 25px 25px 25px
+}
+
+.edit-pop .head {
+	margin: 0 0 25px; font-size: 18px
+}
+
+.edit-pop h2.head {
+	min-height: 27px; font-size: 18px
+}
+
+.edit-pop .head .title {
+	float: left; margin: 0 18px 0 0; padding: 0 !important
+}
+
+.edit-pop .head .deputy {
+	float: left; margin: 4px 0 0; font-size: 14px
+}
+
+.edit-pop .close-btn,#effect-pop-container .close-btn,#diy-pop-container .close-btn,#case-pop-container .close-btn {
+	position: absolute; top: 25px; right: 20px; width: 13px; height: 13px; overflow: hidden; background: url('../images/member_center/member_center_bg.png') no-repeat -206px -36px; cursor: pointer
+}
+
+.edit-pop .btns {
+	overflow: hidden
+}
+
+.public-clew-pop {
+	width: 390px
+}
+
+.public-clew-pop .content {
+	
+}
+
+.public-clew-pop .text {
+	margin: 0 0 25px
+}
+
+.public-clew-pop .btns {
+	font-size: 0; text-align: center
+}
+
+.public-clew-pop .btns button,.public-clew-pop .btns a {
+	width: 90px; height: 27px; margin: 0 10px; border-radius: 3px; border: 0 none; background: #0068b7; color: #ffffff; font-weight: bold; font-size: 12px; line-height: 27px
+}
+
+.public-clew-pop .btns a {
+	display: inline-block; vertical-align: top; text-align: center
+}
+
+.public-clew-pop .btns .cancel-btn {
+	background: #dcdcdc !important; color: #787878
+}
+
+/* 弹出框 公用 */
+.full-overlay,.blank-overlay,.temp-overlay {
+	position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 99999; display: none; background: #000000; opacity: 0
+}
+
+.lt9 .full-overlay,.lt9 .blank-overlay,.lt9 .temp-overlay {
+	filter: alpha(opacity = 0)
+}
+
+.blank-overlay {
+	z-index: 105000
+}
+
+.temp-overlay {
+	z-index: 130000; display: block; opacity: .3
+}
+
+.lt9 .temp-overlay {
+	filter: alpha(opacity = 30)
+}
+
+.edit-pop {
+	position: fixed; top: 50%; left: 50%; z-index: 110000; display: none; border-radius: 5px; border: 1px solid #cecece; background: #ffffff; box-shadow: 0 0 16px rgba(0, 0, 0, .35)
+}
+
+.edit-pop .inner,.temp-upload-pop .inner {
+	padding: 18px 25px 25px 25px
+}
+
+.edit-pop .head {
+	margin: 0 0 25px; font-size: 18px
+}
+
+.edit-pop h2.head {
+	min-height: 27px; font-size: 18px
+}
+
+.edit-pop .head .title {
+	float: left; margin: 0 18px 0 0; padding: 0 !important
+}
+
+.edit-pop .head .deputy {
+	float: left; margin: 4px 0 0; font-size: 14px
+}
+
+.edit-pop .close-btn,#effect-pop-container .close-btn,#diy-pop-container .close-btn,#case-pop-container .close-btn {
+	position: absolute; top: 25px; right: 20px; width: 13px; height: 13px; overflow: hidden; background: url('../images/member_center/member_center_bg.png') no-repeat -206px -36px; cursor: pointer
+}
+
+.edit-pop .btns {
+	overflow: hidden
+}
+
+.public-clew-pop {
+	width: 390px
+}
+
+.public-clew-pop .content {
+	
+}
+
+.public-clew-pop .text {
+	margin: 0 0 25px
+}
+
+.public-clew-pop .btns {
+	font-size: 0; text-align: center
+}
+
+.public-clew-pop .btns button,.public-clew-pop .btns a {
+	width: 90px; height: 27px; margin: 0 10px; border-radius: 3px; border: 0 none; background: #0068b7; color: #ffffff; font-weight: bold; font-size: 12px; line-height: 27px
+}
+
+.public-clew-pop .btns a {
+	display: inline-block; vertical-align: top; text-align: center
+}
+
+.public-clew-pop .btns .cancel-btn {
+	background: #dcdcdc !important; color: #787878
+}
+
+body,input,select,button,textarea {
+	color: #363636; font: 12px/1.5 Microsoft Yahei, arial, \5b8b\4f53;
+}

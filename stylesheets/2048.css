@@ -1,0 +1,324 @@
+@CHARSET "UTF-8";
+
+body {
+	background: #642366;
+	/* background: url('http://www.hellola.cn/images/losangeles/main-bg01.jpg');
+	background-repeat: no-repeat;
+	background-size: auto 100%; */
+}
+
+.content {
+	position: fixed;
+	width: 100%;
+}
+
+.chessboard {
+	overflow: hidden;
+	width: 500px;
+	height: 560px;
+	margin: 0 auto;
+	border-radius: 20px;
+	/*实现IE背景透明*/
+	position: relative; /*实现IE文字不透明*/
+}
+
+.chessboard,.alpha40 {
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(0, 0, 0); /* RGBa with 0.6 opacity */
+	background: rgba(0, 0, 0, 0.4); /* For IE 5.5 - 7*/
+	/* filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,
+		endColorstr=#99000000 ); For IE 8
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)"; */
+}
+
+.alpha80 { /* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(0, 0, 0); /* RGBa with 0.6 opacity */
+	background: rgba(0, 0, 0, 0.8); /* For IE 5.5 - 7*/
+	/* filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,
+		endColorstr=#99000000 ); For IE 8
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)"; */
+}
+
+.background,.background1 {
+	position: absolute;
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	z-index: -999999;
+	width: 1400px;
+	height: 950px;
+	left: 0px;
+	top: 0px;
+	display: none;
+}
+
+.back { /* width: 500px;
+	height: 560px;
+	margin: 0 auto;
+	border-radius: 20px;
+	background: rgb(219, 201, 201);
+	opacity: .6;
+	position: absolute;
+	top: 0px;
+	z-index: 0;
+	left: 0px; */
+	display: none;
+}
+
+.game_area {
+	z-index: 100;
+	height: 410px;
+	position: absolute;
+	left: 45px;
+	bottom: 45px;
+}
+
+.game_area .block {
+	border: 1px rgb(189, 253, 209) solid;
+	float: left;
+	position: relative;
+	border-radius: 15px;
+	position: relative;
+	z-index: 111;
+	width: 100px;
+	height: 100px;
+}
+
+.temp_move {
+	top: 0;
+	left: 0;
+	height: 100px;
+	width: 100px;
+	border-radius: 12px;
+	margin: 0px 0px;
+	text-align: center;
+	line-height: 96px;
+	color: white;
+	font-size: 60px;
+	z-index: 100;
+	background: rgba(250, 11, 238, 0.5) none repeat scroll 0 0 !important;
+	/*实现FF背景透明，文字不透明*/
+	filter: Alpha(opacity =               90);
+	background: #fff;
+	/*实现IE背景透明*/
+	position: relative; /*实现IE文字不透明*/
+}
+
+.num1 {
+	font-size: 60px;
+}
+
+.num2 {
+	font-size: 53px;
+}
+
+.num3 {
+	font-size: 44px;
+}
+
+.num4 {
+	font-size: 40px;
+}
+
+.num5 {
+	font-size: 27px;
+}
+
+.info {
+	position: relative;
+	top: 11px;
+	left: 0px;
+	z-index: 100;
+}
+
+.scroe {
+	font-family: 'Bookman Old Style', serif;
+	position: absolute;
+	border: 1px rgb(189, 253, 209) solid;
+	width: 147px;
+	height: 40px;
+	border-radius: 15px;
+	top: 25px;
+	left: 45px;
+	line-height: 42px;
+	color: white;
+	font-size: 33px;
+	text-align: center;
+}
+
+.btns {
+	height: 50px;
+	position: absolute;
+	top: 19px;
+	left: 217px;
+	line-height: 50px;
+}
+
+.btns .clear {
+	width: 0px;
+	height: 0px;
+	background: none;
+}
+
+.btns div {
+	margin-left: 25px;
+	width: 50px;
+	height: 50px;
+	float: left;
+	background: url('../images/loading.png');
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.btns .anew {
+	background-position: -160px -25px;
+}
+
+.btns .stop {
+	background-position: -2px -25px;
+}
+
+.btns .message {
+	background-position: -107px -25px;
+}
+
+.btns .help {
+	background-position: -55px -25px;
+}
+
+.shade {
+	width: 500px;
+	height: 560px;
+	position: relative;
+	z-index: 120;
+	border-radius: 20px;
+	top: 0px;
+	left: 0px;
+	display: none;
+}
+
+.continuation {
+	width: 170px;
+	height: 170px;
+	margin: 0 auto;
+	position: absolute;
+	top: 50%;
+	margin-top: -85px;
+	left: 50%;
+	margin-left: -85px;
+	background: url('../images/loading.png');
+	background-position: -23px -77px;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	display: none;
+}
+
+.gameover {
+	position: absolute;
+	width: 100%;
+	top: 200px;
+	width: 100%;
+	text-align: center;
+	font-size: 49px;
+	font-weight: bold;
+	color: white;
+	font-family: 'Bookman Old Style', serif;
+	display: none;
+}
+
+.overinfo {
+	
+}
+
+.startinfo {
+	cursor: pointer;
+	border: 1px white solid;
+	width: 250px;
+	height: 65px;
+	line-height: 65px;
+	border-radius: 33px;
+	margin: 0 auto;
+}
+
+.startinfo:hover {
+	border: 1px rgb(5, 5, 5) solid;
+	color: #000;
+	background: #FFF;
+}
+
+@media screen and (max-width:500px) {
+	body {
+		width: 100%;
+	}
+	.chessboard {
+		width: 96%;
+	}
+	.auto {
+		top: 20px;
+		width: 94%;
+		margin: 0 auto;
+		position: inherit;
+	}
+	.game_area {
+		left: 0px;
+		width: 100%;
+		position: static;
+	}
+	.game_area .block {
+		width: 24%;
+		top: 20px;
+		position: static;
+	}
+	.temp_move {
+		width: 100%;
+	}
+	.info {
+		width: 94%;
+		height: 42px;
+		position: inherit;
+		margin: 0 auto;
+		margin-top: 37px;
+	}
+	.scroe {
+		top: 20px;
+		position: static;
+		left: 0px;
+		float: left;
+		width: 40%;
+		top: 0px;
+	}
+	.message,.help {
+		display: none;
+	}
+	.btns {
+		overflow: hidden;
+		top: 0px;
+		top: 0px;
+		width: 59%;
+		right: 0px;
+		left: initial;
+		overflow: hidden;
+		position: static;
+		float: left;
+	}
+	.btns div {
+		margin-left: 45px;
+	}
+}
+
+.msg {
+	position: absolute;
+	top: 212px;
+	left: 42px;
+	display:none;
+}
+
+.msg p {
+	color: white;
+	font-size: 27px;
+	text-align: center;
+}
+.jx{cursor: pointer;}
+.help{display:none;}

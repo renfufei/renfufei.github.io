@@ -27,7 +27,15 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
     
-      <section id="main_content" class="inner">
+      <section id="main_content1" class="inner">
+        <h3>
+        <a name="support-or-contact" class="anchor" href="javascript:toHttps(1);">想让你的GitHub页面开启https?</a></h3>
+        <p>
+          请访问: <a href="https://kloudsec.com/github-pages/new">https://kloudsec.com/github-pages/new</a>
+        </p>
+      </section>
+    
+      <section id="main_content2" class="inner">
         <h3>
         <a name="support-or-contact" class="anchor" href="https://github.com/kimmking/SpringBatchReferenceCN">Spring Batch参考文档中文版</a></h3>
         <p>
@@ -38,7 +46,7 @@
         </p>
       </section>
       
-      <section id="main_content" class="inner">
+      <section id="main_content3" class="inner">
       <h3>
       <a name="support-or-contact" class="anchor" href="http://blog.csdn.net/renfufei">CSDN博客地址</a></h3>
       <p>
@@ -50,7 +58,7 @@
       </p>
       </section>
       
-      <section id="main_content" class="inner">
+      <section id="main_content4" class="inner">
       <h3>
       <a name="support-or-contact" class="anchor" href="/Baraja/">Baraja 扑克牌效果插件</a></h3>
       <p>
@@ -67,7 +75,24 @@
       </footer>
     </div>
 
-    
+    <script>
+		toHttps();
+		//
+		function toHttps(force){
+			var p = location.protocol;
+			var h = location.href;
+			if(p.indexOf("http:") >-1){
+				if(p.indexOf("https") < 0){
+					h = h.replace("http:", "https:");
+					location.href = (h);
+				}
+			} else if(force){
+				location.href = "https://renfufei.cncounter.com/";
+			}
+			
+		};
+
+    </script>
 
   </body>
 </html>

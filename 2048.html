@@ -407,55 +407,6 @@ function bodyAuto(){
             bodyAuto();
         });
     //全屏背景自适应 end
-    var gi=-1;
-    var imgs=[ 'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/1.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/2.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/3.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/4.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/5.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/6.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/7.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/8.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/9.jpg',
-                    'http://7ximtt.com1.z0.glb.clouddn.com/background/2048/10.jpg'   ]
-    setTimeout(function(){loadImg(0);},1);
-    var imgLoad=[];
-    function loadImg(index){
-        var img=new Image();
-        img.src=imgs[index];
-        img.onload = function() {
-            callback(index);
-        };
-        img.onerror = function() {
-            var i=index+1;
-            if(i>=imgs.length){
-                i=0;
-            }
-            loadImg(i);
-        };
-    }
-    var ImgS=[];
-    function callback(index){
-        $('.background').attr('src',imgs[index]).fadeIn(1000);
-        gi=index;
-        for(var i=0;i<imgs.length;i++){
-            imgLoad[i]={};
-            imgLoad[i].img = new Image();
-            imgLoad[i].img.src = imgs[i];
-            imgLoad[i].img.onload = function(img){
-                ImgS[ImgS.length]=$(this).attr('src');
-            };
-        }
-        setInterval(function(){
-            for(var i=0;i<ImgS.length&&ImgS.length>1;i++){
-                index++;
-                if(index>=ImgS.length)index=0;
-                $('.b:visible').fadeOut();
-                $('.b:hidden').attr('src',ImgS[index]).fadeIn(1000);
-                break;
-            }
-        },5000);
-    }
     
 window.onresize = function() {
         backImgAuto($('.background'));
